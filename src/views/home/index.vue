@@ -33,18 +33,29 @@
 		data() {
 		  return {
 		    loading: false,
-		    info:{counters:[]}
+		    info:{counters:[]},
+			counter: [
+				{name: "年访客总人数", value: 868},
+				{name: "公司员工", value: 520},
+				{name: "昨天新增会员", value: 0},
+				{name: "本月新增会员", value: 5},
+				{name: "最近7天新增", value: 1},
+				{name: "最近30天新增", value: 16},
+				{name: "今天订单数", value: 0},
+				{name: "最近30天订单数", value: 10}
+			]
 		  }
 		},
 		mounted: function(){
 			this.ReLoad();
 		},
 		methods: {
-			
+
 
 			ReLoad: function(){
 				this.loading = true;
 				this.axios.post("/shop/admin_api/get_base_data").then((res) => {
+
 				    this.info = res.data.data;
 				    this.loading = false;
 				    this.$message({message: '刷新成功', type: 'success'});
@@ -59,7 +70,7 @@
 	          series: [
 	            {
 	              type: 'bar',
-	              data:item.data, 
+	              data:item.data,
 	              itemStyle:{normal:{color:'#409EFF'}},
 	            }
 	          ]
@@ -78,7 +89,7 @@
 	          ]
 	      	}
 	      }
-		    
+
 
 		},
 
