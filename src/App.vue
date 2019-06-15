@@ -18,7 +18,7 @@
 				<!-- LOGO -->
 				<el-menu-item index="" disabled class="logo" style="background-color: #2785e5; color: #fff; min-width: 200px; font-size: 18px; text-align: center; padding: 0;" v-show="!isCollapse">
 					<div style="background-color: #2785e5; width: 100%; color: #fff;">
-						{{sys_config.title}}
+						GJSS访客管理平台
 					</div>
 				</el-menu-item>
 

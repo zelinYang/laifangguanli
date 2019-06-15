@@ -71,9 +71,9 @@
 
 
           list_input:{
-            search:'', 
-            page:1, 
-            pagesize:10, 
+            search:'',
+            page:1,
+            pagesize:10,
             filter: {},
             customer_id:'',
           }
@@ -88,7 +88,7 @@
           this.loading = true;
           this.list_input.customer_id = this.customer_id;
           this.axios.post(this.$store.state.sys.api.action_list, this.list_input).then((res) => {
-              this.rows = res.data.data;
+              // this.rows = res.data.data;
               this.loading = false;
           });
         },

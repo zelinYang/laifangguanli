@@ -1,5 +1,85 @@
 const Mock = require('mockjs');
 
+
+let random = Mock.Random;
+
+let arr = [];
+for(let i = 0;i < 100;i ++){
+    let obj = {
+        // 访客姓名
+        vName: random.cname(),
+        //访客性别
+        vSex: setSex(random.bool()),
+        // 所在单位
+        company: Mock.mock({
+            "array|+1": [
+                "光明乳业",
+                "Bingosoft",
+                "微游网络",
+                "软通动力",
+                "道一云",
+                "绛门科技",
+                "萌友游戏",
+                "中望软件",
+                "帮啦跑腿",
+                "亚美科技"
+            ]
+        }).array,
+        // 来访目的
+        target: '技术交流/商务交流',
+        // 受访部门
+        depart: '技术部/销售部',
+        // 受访人
+        vPeple: 'XXX',
+        // 填表时间
+        creatTime: getTime(),
+        // 将预约的时间
+        vTime: getVTime(),
+        // 编号
+        num: i + 1,
+        // 身份证号
+        idCard: '450222XXXXX18位',
+        // 手机号
+        mobile: '17687576301'
+    };
+    arr.push(obj)
+}
+
+function setSex(val) {
+    if(val){
+        return '男';
+    }else {
+        return '女';
+    }
+}
+
+function getTime() {
+    const date = new Date();
+    let YY = date.getFullYear();
+    let MM = date.getMonth() > 10?date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+    let DD = date.getDate() > 10? date.getDate() : `0${date.getDate()}`;
+    let HH = date.getHours() > 10? date.getHours() : `0${getHours()}`;
+    // let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
+    console.log(1);
+    // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
+
+    return `${YY}-${MM}-${DD} }`
+}
+
+function getVTime() {
+    const date = new Date();
+    let YY = date.getFullYear();
+    let MM = date.getMonth() > 10?date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+    let DD = date.getDate() > 10? date.getDate() + 1 : `0${date.getDate() + 1}`;
+    let HH = date.getHours() > 10? date.getHours() : `0${getHours()}`;
+    //let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
+    // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
+
+    return `${YY}-${MM}-${DD}`
+}
+
+
+Mock.mock('/vistor/getTable','post',arr);
 /*
 // System
 Mock.mock('/index/user/trylogin', 'post', {errcode:0});
