@@ -15,8 +15,8 @@
 
             <!-- 搜索框 -->
             <el-col :span="4">
-                <el-input placeholder="" class="input-with-select" prefix-icon="el-icon-search" auto-complete="true"
-                          @change="" style="max-width: 280px; float: right;" :clearable="true"></el-input>
+                <el-input placeholder="请输入要查找人的姓名" class="input-with-select" prefix-icon="el-icon-search"
+                          @change="searchName" v-model="sousuo" style="max-width: 280px; float: right;" :clearable="true"></el-input>
             </el-col>
         </el-row>
 
@@ -29,22 +29,24 @@
         </div>
 
         <!-- 表格 -->
-        <el-table :data="rows" v-loading="loading">
+        <el-table :data="rows.slice((currentPage-1)*pagesize,currentPage*pagesize)" v-loading="loading">
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="num" label="编号" width="100"></el-table-column>
-            <el-table-column prop="vName" label="姓名" width="100"></el-table-column>
+            <el-table-column prop="vName" label="姓名" width=""></el-table-column>
             <el-table-column prop="vSex" label="性别" width="100"></el-table-column>
+            <el-table-column prop="fun" label="预约方式" width="100"></el-table-column>
             <el-table-column prop="company" label="所在单位" width="100"></el-table-column>
             <el-table-column prop="mobile" label="手机" width="200"></el-table-column>
-            <el-table-column prop="idCard" label="身份证" width=""></el-table-column>
-            <el-table-column prop="creatTime" label="填表时间" width="300"></el-table-column>
-            <el-table-column prop="vTime" label="预约时间" width="280"></el-table-column>
+            <el-table-column prop="idCard" label="身份证" width="300"></el-table-column>
+            <el-table-column prop="creatTime" label="填表时间" width="200"></el-table-column>
+            <el-table-column prop="vTime" label="预约时间" width="200"></el-table-column>
             <el-table-column prop="target" label="来访目的" width="180"></el-table-column>
             <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>
-            <el-table-column prop="vPeple" label="受访人" width="100"></el-table-column>
+            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>
+            <el-table-column prop="state" label="状态" width="100"></el-table-column>
             <el-table-column label="操作" width="100">
                 <template slot-scope="scope">
-                    <el-button size="mini" @click="customer =scope.row; dialog_detail_showing=true; "
+                    <el-button size="mini" @click="showDetail(scope.row)"
                                style="margin-right: 10px;">详情
                     </el-button>
                 </template>
@@ -59,15 +61,64 @@
                 @current-change="handleCurrentChange"
                 background
                 :page-sizes="[10, 20, 50, 100]"
-                :current-page="list_input.page"
-                :page-size="list_input.page_size"
+                :current-page="currentPage"
+                :page-size="pagesize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="rows.count">
+                :total="rows.length">
         </el-pagination>
 
 
-        <el-dialog title="详情" :visible.sync="dialog_detail_showing" :fullscreen="false" width="75%">
-            <Detail :id="customer.id"></Detail>
+        <el-dialog title="详情" :visible.sync="dialog_detail_showing" :fullscreen="false" width="50%">
+            <el-tabs type="border-card">
+                <el-tab-pane label="访客预约资料">
+                    <el-form ref="form" :model="customer" label-width="80px">
+                        <div style="display: flex;justify-content: space-between">
+                            <el-form-item label="访客姓名">
+                                <el-input v-model="customer.vName" :disabled="true"></el-input>
+                            </el-form-item>
+                            <el-form-item label="访客性别">
+                                <el-input v-model="customer.vSex" :disabled="true"></el-input>
+                            </el-form-item>
+                            <el-form-item label="所在单位">
+                                <el-input v-model="customer.company" :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                        <div style="display: flex;justify-content: space-between">
+                            <el-form-item label="手机号码">
+                                <el-input v-model="customer.mobile" :disabled="true"></el-input>
+                            </el-form-item>
+                            <el-form-item label="身份证号">
+                                <el-input v-model="customer.idCard" :disabled="true"></el-input>
+                            </el-form-item>
+                            <el-form-item label="状态">
+                                <el-input v-model="customer.state" :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                        <div style="display: flex;justify-content: space-between">
+                            <el-form-item label="预约方式">
+                                <el-input v-model="customer.fun" :disabled="true"></el-input>
+                            </el-form-item>
+                            <el-form-item label="预约时间">
+                                <el-input v-model="customer.vTime" :disabled="true"></el-input>
+                            </el-form-item>
+                            <el-form-item label="填表日期">
+                                <el-input v-model="customer.creatTime" :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                        <div style="display: flex;justify-content: space-between">
+                            <el-form-item label="来访目的">
+                                <el-input v-model="customer.target" :disabled="true"></el-input>
+                            </el-form-item>
+                            <el-form-item label="受访部门">
+                                <el-input v-model="customer.depart" :disabled="true"></el-input>
+                            </el-form-item>
+                            <el-form-item label="受访人">
+                                <el-input v-model="customer.vPeple" :disabled="true"></el-input>
+                            </el-form-item>
+                        </div>
+                    </el-form>
+                </el-tab-pane>
+            </el-tabs>
         </el-dialog>
 
 
@@ -88,6 +139,7 @@
         props: {},
         data() {
             return {
+                sousuo: '',
                 loading: false,
                 dialog_detail_showing: false,
                 dialog_add_showing: false,
@@ -96,13 +148,16 @@
                 user_pic: 'this.src=' + require('@/assets/user.png'),
 
 
-                list_input: {
-                    from_key: '',
-                    search: '',
-                    page: 1,
-                    page_size: 10,
-                    filter: {vip_vipcard_id: '', vip_store_id: '', mobile: '', wx_sex: '',},
-                },
+                // list_input: {
+                //     from_key: '',
+                //     search: '',
+                //     page: 1,
+                //     page_size: 10,
+                //     filter: {vip_vipcard_id: '', vip_store_id: '', mobile: '', wx_sex: '',},
+                // },
+
+                currentPage: 1,
+                pagesize: 10,
             };
         },
 
@@ -118,15 +173,22 @@
                     this.loading = false;
                 });
             },
-            handleSizeChange: function (val) {
-                this.list_input.page = 1;
-                this.list_input.page_size = val;
+            handleSizeChange (val) {
+                this.pagesize = val;
                 this.ReLoad();
             },
-            handleCurrentChange: function (val) {
-                this.list_input.page = val;
+            handleCurrentChange(val) {
+                this.currentPage = val;
                 this.ReLoad();
             },
+            searchName(){
+                this.$message({message: '此功能尚在开发中', type: 'warning'});
+            },
+            showDetail(val){
+                this.customer = val;
+                this.dialog_detail_showing = true;
+                console.log(this.customer);
+            }
         },
         computed: {},
         components: {Detail, AddForm}

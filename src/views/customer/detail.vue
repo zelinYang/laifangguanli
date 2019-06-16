@@ -2,10 +2,10 @@
 	<div>
 					<div style="text-align: center; position: absolute; width: 160px; left: 0px; padding: 10px;">
 						<img :src="info.avatar_url ? info.avatar_url : require('@/assets/user.png')" style="width: 100px;height: 100px; border-radius:50%" onerror="this.src='/static/img/user.png';">
-						
+
 						<p><el-button type="" @click="ReLoad()">刷新</el-button></p>
 					</div>
-				
+
 				<div style="padding-left: 160px; min-height: 600px;">
 		      		<el-tabs v-model="tab_active_name" type="border-card">
 		      		  <el-tab-pane label="基本信息" name="tab-base" v-loading="loading">
@@ -31,7 +31,7 @@
 								      		<el-input-number v-model="info.exinfo.award_order" :precision="0" :step="10" :max="999999999"></el-input-number>
 								      		<p>该用户所带来的分销下单自动产生的奖励金额</p>
 								      	</el-form-item>
-								      	<el-form-item label=""> 
+								      	<el-form-item label="">
 								      		<el-button-group>
 								      		  <el-button type="primary" @click="Save()" :loading="loading">保存修改</el-button>
 								      		</el-button-group>
@@ -106,10 +106,10 @@
 
 
 					</el-tabs>
-				
+
 				</div>
 
-					
+
 	</div>
 </template>
 
@@ -157,7 +157,7 @@
 		  			this.$message({message: '刷新成功', type: 'success'});
 		  		});
 		  	},
-		  	
+
 		  	re_load_wx(){
 		  	  this.loading = true;
 		  	  this.axios.post("/shop/admin_api/reload_wx_userinfo", {openid:this.info.openid}).then((res) => {

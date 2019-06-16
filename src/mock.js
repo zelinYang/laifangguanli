@@ -11,20 +11,7 @@ for(let i = 0;i < 100;i ++){
         //访客性别
         vSex: setSex(random.bool()),
         // 所在单位
-        company: Mock.mock({
-            "array|+1": [
-                "光明乳业",
-                "Bingosoft",
-                "微游网络",
-                "软通动力",
-                "道一云",
-                "绛门科技",
-                "萌友游戏",
-                "中望软件",
-                "帮啦跑腿",
-                "亚美科技"
-            ]
-        }).array,
+        company:setCop(),
         // 来访目的
         target: '技术交流/商务交流',
         // 受访部门
@@ -40,7 +27,12 @@ for(let i = 0;i < 100;i ++){
         // 身份证号
         idCard: '450222XXXXX18位',
         // 手机号
-        mobile: '17687576301'
+        mobile: '17687576301',
+        // 状态
+        state: '未审批',
+        // 预约方式
+        fun: setFun()
+
     };
     arr.push(obj)
 }
@@ -55,28 +47,72 @@ function setSex(val) {
 
 function getTime() {
     const date = new Date();
+    console.log(date.getMinutes());
     let YY = date.getFullYear();
     let MM = date.getMonth() > 10?date.getMonth() + 1 : `0${date.getMonth() + 1}`;
     let DD = date.getDate() > 10? date.getDate() : `0${date.getDate()}`;
     let HH = date.getHours() > 10? date.getHours() : `0${getHours()}`;
-    // let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
-    console.log(1);
     // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
 
-    return `${YY}-${MM}-${DD} }`
-}
+    return `${YY}-${MM}-${DD}`;
 
+
+
+}
+let flag = true;
 function getVTime() {
     const date = new Date();
+    console.log(date.getMinutes());
     let YY = date.getFullYear();
     let MM = date.getMonth() > 10?date.getMonth() + 1 : `0${date.getMonth() + 1}`;
     let DD = date.getDate() > 10? date.getDate() + 1 : `0${date.getDate() + 1}`;
     let HH = date.getHours() > 10? date.getHours() : `0${getHours()}`;
-    //let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
+    // let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
     // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
 
-    return `${YY}-${MM}-${DD}`
+    return `${YY}-${MM}-${DD} ${HH}:${setMinute()}`;
+
+    function setMinute() {
+        if(flag){
+            flag = false;
+            return '00';
+        }else {
+            flag = true;
+            return '30'
+        }
+    }
 }
+
+
+
+
+function setCop(){
+    let copArr = [
+        "光明乳业",
+        "Bingosoft",
+        "微游网络",
+        "软通动力",
+        "道一云",
+        "绛门科技",
+        "萌友游戏",
+        "中望软件",
+        "帮啦跑腿",
+        "亚美科技"
+    ];
+    let num = Math.round(Math.random()*9);
+    return copArr[num];
+}
+
+
+function setFun(){
+    let copArr = ['电话预约','短信预约','网络预约'];
+    let num = Math.round(Math.random()*2);
+    return copArr[num];
+}
+
+
+
+
 
 
 Mock.mock('/vistor/getTable','post',arr);
