@@ -5,7 +5,7 @@
       <!-- 按钮 -->
       <el-col :span="20">
         <el-button-group style="margin-right: 10px;">
-          <el-button type="primary" @click="dialog_new_showing=true">+ 下单</el-button>
+          <el-button type="primary" @click="dialog_new_showing=true">+ 添加记录</el-button>
         </el-button-group>
 
         <el-button-group style="margin-right: 10px;">
@@ -20,24 +20,25 @@
     </el-row>
 
     <!-- 表格 -->
-    <el-table :data="rows.rows" v-loading="loading">
+    <el-table :data="rows.slice((currentPage-1)*pagesize,currentPage*pagesize)" v-loading="loading">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="id" label="订单编号" width="100"></el-table-column>
-      <el-table-column prop="title" label="订单"></el-table-column>
-      <el-table-column prop="money" label="金额" width="100"></el-table-column>
-      <el-table-column prop="contacts.city" label="城市" width="100"></el-table-column>
-      <el-table-column prop="contacts.username" label="姓名" width="100"></el-table-column>
-      <el-table-column prop="create_time" label="下单时间" width="180"></el-table-column>
-      <el-table-column prop="status_title" label="订单状态" width="100"></el-table-column>
-      <el-table-column prop="pay_status_title" label="支付状态" width="100">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.pay_status == '0' ? 'warning' : 'success'">{{scope.row.pay_status_title}}</el-tag>
-          </template>
-      </el-table-column>
-      <el-table-column prop="progress_status_title" label="进展" width="100"></el-table-column>
+      <el-table-column prop="num" label="编号" width="100"></el-table-column>
+      <el-table-column prop="emName" label="姓名" width=""></el-table-column>
+      <el-table-column prop="emSex" label="性别" width="100"></el-table-column>
+      <el-table-column prop="depart" label="所在部门" width="180"></el-table-column>
+      <el-table-column prop="mobile" label="手机" width="200"></el-table-column>
+      <el-table-column prop="idCard" label="身份证" width="250"></el-table-column>
+      <el-table-column prop="workNum" label="工号" width="180"></el-table-column>
+      <el-table-column prop="dorCardNum" label="门禁卡号" width="180"></el-table-column>
+      <el-table-column prop="intoTime" label="最近的入闸时间" width="180"></el-table-column>
+      <el-table-column prop="leaveTime" label="最近的出闸时间" width="180"></el-table-column>
+      <el-table-column prop="intoNum" label="累计入闸/次" width="100"></el-table-column>
+      <el-table-column prop="leaveNum" label="累计出闸/次" width="100"></el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
-          <el-button size="mini" @click="item=scope.row; dialog_detail_showing=true; " style="margin-right: 10px;">详情</el-button>
+          <el-button size="mini" @click="deleteRow(scope.row)"
+                     style="margin-right: 10px;">删除记录
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -50,13 +51,13 @@
     @current-change="handleCurrentChange"
     background
     :page-sizes="[10, 20, 50, 100]"
-    :current-page="list_input.page"
-    :page-size="list_input.page_size"
+    :current-page="currentPage"
+    :page-size="pagesize"
     layout="total, sizes, prev, pager, next, jumper"
-    :total="rows.count">
+    :total="rows.length">
     </el-pagination>
-    
-    
+
+
 
     <el-dialog title="详情" :visible.sync="dialog_detail_showing" width="1200px" append-to-body>
       <Detail :id="item.id"></Detail>
@@ -64,7 +65,7 @@
 
 
 
-    <el-dialog title="下单" :visible.sync="dialog_new_showing" width="1200px" append-to-body>
+    <el-dialog title="添加记录" :visible.sync="dialog_new_showing" width="1200px" append-to-body>
       <FormNew></FormNew>
     </el-dialog>
   </div>
@@ -80,7 +81,7 @@
 
     export default {
       props: {
-          customer_id:{},
+          // customer_id:{},
       },
       data() {
         return {
@@ -88,16 +89,19 @@
           dialog_detail_showing: false,
           dialog_new_showing: false,
           rows:[],
+          row:[],
           item:{},
+          currentPage: 1,
+          pagesize: 10,
 
 
-          list_input:{
-            search:'', 
-            page:1, 
-            page_size:10, 
-            filter: {},
-            customer_id:'',
-          }
+          // list_input:{
+          //   search:'',
+          //   page:1,
+          //   page_size:10,
+          //   filter: {},
+          //   customer_id:'',
+          // }
         };
       },
 
@@ -107,31 +111,38 @@
       methods: {
         ReLoad(){
           this.loading = true;
-          this.list_input.customer_id = this.customer_id;
-          this.axios.post(this.$store.state.sys.api.order_list, this.list_input).then((res) => {
-              this.rows = res.data.data;
+          // this.list_input.customer_id = this.customer_id;
+          this.axios.post('/peple/employee/getTable').then((res) => {
+              this.rows = res.data;
+              this.row = this.rows
               this.loading = false;
           });
         },
-        handleSizeChange: function(val) {
-          this.list_input.page = 1;
-          this.list_input.page_size = val;
+        deleteRow(val){
+          // console.log(val);
+          let start = val.num - 1;
+          this.row.splice(start,1)
+          this.rows = this.row
+          console.log(this.rows);
+        },
+        handleSizeChange(val) {
+          this.pagesize = val;
           this.ReLoad();
         },
-        handleCurrentChange: function(val) {
-          this.list_input.page = val;
+        handleCurrentChange(val) {
+          this.currentPage = val;
           this.ReLoad();
         },
       },
       computed: { },
       components: { Detail,FormNew },
-      watch: {
-          customer_id:{
-            //immediate:true,
-            handler:function(){
-              this.ReLoad();
-            }
-          }
-      },
+      // watch: {
+      //     customer_id:{
+      //       //immediate:true,
+      //       handler:function(){
+      //         this.ReLoad();
+      //       }
+      //     }
+      // },
     }
 </script>

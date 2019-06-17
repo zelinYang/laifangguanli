@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<p style="text-align: center;margin: 10em 0; font-size: 14px;text-align: center;">请从微信端直接下单</p>
+		<p style="text-align: center;margin: 10em 0; font-size: 14px;text-align: center;">请刷卡或者从其他客户端提交信息</p>
 	</div>
 </template>
 
@@ -15,7 +15,7 @@
 				form: {title:'', remark:'', pics:[] },
 			}
 		},
-		methods: { 
+		methods: {
 			Save() {
 
 			},

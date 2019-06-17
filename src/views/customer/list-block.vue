@@ -16,7 +16,8 @@
             <!-- 搜索框 -->
             <el-col :span="4">
                 <el-input placeholder="请输入要查找人的姓名" class="input-with-select" prefix-icon="el-icon-search"
-                          @change="searchName" v-model="sousuo" style="max-width: 280px; float: right;" :clearable="true"></el-input>
+                          @change="searchName" v-model="sousuo" style="max-width: 280px; float: right;"
+                          :clearable="true"></el-input>
             </el-col>
         </el-row>
 
@@ -35,10 +36,11 @@
             <el-table-column prop="vName" label="姓名" width=""></el-table-column>
             <el-table-column prop="vSex" label="性别" width="100"></el-table-column>
             <el-table-column prop="fun" label="预约方式" width="100"></el-table-column>
+            <el-table-column prop="pepleN" label="来访人数" width="100"></el-table-column>
             <el-table-column prop="company" label="所在单位" width="100"></el-table-column>
             <el-table-column prop="mobile" label="手机" width="200"></el-table-column>
             <el-table-column prop="idCard" label="身份证" width="300"></el-table-column>
-            <el-table-column prop="creatTime" label="填表时间" width="200"></el-table-column>
+            <el-table-column prop="creatTime" label="填表日期" width="200"></el-table-column>
             <el-table-column prop="vTime" label="预约时间" width="200"></el-table-column>
             <el-table-column prop="target" label="来访目的" width="180"></el-table-column>
             <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>
@@ -119,10 +121,14 @@
                     </el-form>
                 </el-tab-pane>
             </el-tabs>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="danger" @click="desPass">不通过</el-button>
+                <el-button type="primary" @click="passA">通 过</el-button>
+            </span>
         </el-dialog>
 
 
-        <el-dialog title="新增" :visible.sync="dialog_add_showing" width="1200px">
+        <el-dialog title="新增预约" :visible.sync="dialog_add_showing" width="1200px">
             <AddForm></AddForm>
         </el-dialog>
 
@@ -158,6 +164,8 @@
 
                 currentPage: 1,
                 pagesize: 10,
+
+                rowNum: 0,
             };
         },
 
@@ -173,7 +181,7 @@
                     this.loading = false;
                 });
             },
-            handleSizeChange (val) {
+            handleSizeChange(val) {
                 this.pagesize = val;
                 this.ReLoad();
             },
@@ -181,13 +189,22 @@
                 this.currentPage = val;
                 this.ReLoad();
             },
-            searchName(){
+            searchName() {
                 this.$message({message: '此功能尚在开发中', type: 'warning'});
             },
-            showDetail(val){
+            showDetail(val) {
                 this.customer = val;
+                this.rowNum = parseInt(this.customer.num) -1;
                 this.dialog_detail_showing = true;
                 console.log(this.customer);
+            },
+            passA(){
+                this.rows[this.rowNum].state = '通过审批';
+                this.dialog_detail_showing = false;
+            },
+            desPass(){
+                this.rows[this.rowNum].state = '不通过审批';
+                this.dialog_detail_showing = false;
             }
         },
         computed: {},
