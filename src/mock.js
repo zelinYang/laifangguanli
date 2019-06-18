@@ -266,7 +266,7 @@ let random = Mock.Random;
 // 协力
 (function () {
     let arr = [];
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 5; i++) {
         let obj = {
             // 编号
             num: i + 1,
@@ -300,6 +300,7 @@ let random = Mock.Random;
             cArr.push(`GJSSCZ00${i}`)
         }
         let num = Math.round(Math.random() * cArr.length - 1);
+        debugger;
         if (val === '常驻') {
             return cArr[num];
         }
@@ -361,6 +362,7 @@ let random = Mock.Random;
         // let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
         // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
 
+        debugger;
         if(val !== '正在办理业务'){
             return `${YY}-${MM}-${DD} ${setHour()}:${setMinute()}:${setSecond()}`;
         }
@@ -393,6 +395,7 @@ let random = Mock.Random;
     }
     let flag = true;
     function setSate(val) {
+        debugger;
         if(val !== '常驻'){
             if(flag){
                 flag = false;

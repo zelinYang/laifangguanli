@@ -5,7 +5,7 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    //{ path: '/login',    component: () => import('./views/Login.vue') },
+    { path: '/login',    component: () => import('./views/Login.vue') },
     { path: '/',                    component: () => import('./views/home/index.vue') },
     { path: '/customer/list',       component: () => import('./views/customer/list.vue') },
     { path: '/customer/vip-list',   component: () => import('./views/customer/vipcard/vip-list.vue') },

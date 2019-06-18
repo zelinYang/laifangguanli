@@ -103,14 +103,10 @@
 
 
             ReLoad: function () {
-                this.loading = true;
-                this.axios.post("/shop/admin_api/get_base_data").then((res) => {
-                    res.data.data.counters = this.counter;
-                    res.data.data.bars = this.bars;
-                    this.info = res.data.data;
-                    this.loading = false;
-                    this.$message({message: '刷新成功', type: 'success'});
-                });
+                this.info.counters = this.counter;
+                this.info.bar = this.bars;
+                this.loading = false;
+                this.$message({message: '刷新成功', type: 'success'});
             },
             bar: function (item) {
                 return {

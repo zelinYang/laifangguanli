@@ -26,8 +26,8 @@
             <el-table-column prop="xName" label="姓名" width=""></el-table-column>
             <el-table-column prop="xSex" label="性别" width="100"></el-table-column>
             <el-table-column prop="xType" label="协力类别" width="100"></el-table-column>
-
             <el-table-column prop="cardNum" label="门禁卡号" width="180"></el-table-column>
+            <el-table-column prop=" xState" label="访客状态" width="180"></el-table-column>
             <el-table-column prop="intoTime" label="最近的入闸时间" width="200"></el-table-column>
             <el-table-column prop="leaveTime" label="最近的出闸时间" width="200"></el-table-column>
             <el-table-column label="操作" width="100">
