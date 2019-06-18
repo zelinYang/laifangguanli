@@ -12,7 +12,7 @@
 <!--    </div>-->
 
     <el-tabs type="border-card">
-      <el-tab-pane label="所有预约">
+      <el-tab-pane label="访客预约列表">
           <CustomerListBlock></CustomerListBlock>
       </el-tab-pane>
     </el-tabs>

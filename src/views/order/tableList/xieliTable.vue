@@ -5,10 +5,6 @@
             <!-- 按钮 -->
             <el-col :span="20">
                 <el-button-group style="margin-right: 10px;">
-                    <el-button type="primary" @click="dialog_new_showing=true">+ 下单</el-button>
-                </el-button-group>
-
-                <el-button-group style="margin-right: 10px;">
                     <el-button icon="el-icon-refresh" @click="ReLoad()" :loading="loading">刷新</el-button>
                 </el-button-group>
             </el-col>
@@ -23,13 +19,20 @@
         <el-table :data="rows.slice((currentPage-1)*pagesize,currentPage*pagesize)" v-loading="loading">
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="num" label="编号" width="100"></el-table-column>
-            <el-table-column prop="xName" label="姓名" width=""></el-table-column>
-            <el-table-column prop="xSex" label="性别" width="100"></el-table-column>
-            <el-table-column prop="xType" label="协力类别" width="100"></el-table-column>
-            <el-table-column prop="cardNum" label="门禁卡号" width="180"></el-table-column>
-            <el-table-column prop=" xState" label="访客状态" width="180"></el-table-column>
-            <el-table-column prop="intoTime" label="最近的入闸时间" width="200"></el-table-column>
-            <el-table-column prop="leaveTime" label="最近的出闸时间" width="200"></el-table-column>
+            <el-table-column prop="emName" label="姓名" width=""></el-table-column>
+            <el-table-column prop="emSex" label="性别" width="100"></el-table-column>
+            <!--      <el-table-column prop="depart" label="所在部门" width="180"></el-table-column>-->
+            <el-table-column prop="mobile" label="手机" width="200"></el-table-column>
+            <el-table-column prop="idCard" label="身份证" width="250"></el-table-column>
+            <el-table-column prop="intoTime" label="记录时间" width="180"></el-table-column>
+            <el-table-column prop="pType" label="类别" width="100">
+                <template slot-scope="scope">
+                    <el-tag type="info" v-if="scope.row.pType == '入司'">入司</el-tag>
+                    <el-tag type=" " v-if="scope.row.pType == '入厂'">入厂</el-tag>
+                    <el-tag type="success" v-if="scope.row.pType == '施工'">施工</el-tag>
+                    <el-tag type="warning" v-if="scope.row.pType == '协力'">协力</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" width="100">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="deleteRow(scope.row)"

@@ -7,6 +7,7 @@ let random = Mock.Random;
 (function () {
     let arr = [];
     for (let i = 0; i < 100; i++) {
+        let prot = setPro()
         let obj = {
             // 访客姓名
             vName: random.cname(),
@@ -27,18 +28,28 @@ let random = Mock.Random;
             // 编号
             num: i + 1,
             // 身份证号
-            idCard: '450222XXXXX18位',
+            idCard: '452228199999999999',
             // 手机号
             mobile: '17687576301',
             // 状态
-            state: '未审批',
+            state: setState(),
             // 预约方式
             fun: setFun(),
             // 人数
-            pepleN: 1
-
+            pepleN: 1,
+            // 访客属性
+            property: prot,
+            // 访问时长
+            times: setTimes(prot)
         };
         arr.push(obj)
+    }
+
+
+    function setState() {
+        let sArr = ['未审批','通过审批','不通过审批'];
+        let num = Math.round(Math.random() * (sArr.length - 1));
+        return sArr[num];
     }
 
     function setSex(val) {
@@ -62,6 +73,24 @@ let random = Mock.Random;
 
 
     }
+
+    function setTimes(val){
+        let tArr = ['临时','短期','常驻'];
+        let tErr = ['临时','短期'];
+        if(val === '协力'){
+            let num = Math.round(Math.random() * (tArr.length - 1));
+            return tArr[num];
+        }else {
+            let num = Math.round(Math.random() * (tErr.length - 1));
+            return tErr[num]
+        }
+    }
+    function setPro(){
+        let pArr = ['入司','入厂','施工','协力'];
+        let num = Math.round(Math.random() * (pArr.length - 1))
+        return pArr[num]
+    }
+
 
     let flag = true;
 
@@ -120,11 +149,11 @@ let random = Mock.Random;
     }
 
 
-    Mock.mock('/vistor/getTable', 'post', arr);
+    Mock.mock('/vistor/getTable', 'post', arr.reverse());
 })();
 
 // 人员管理的模拟数据
-// 公司员工
+// 公司员工/常驻
 (function () {
     let arr = [];
 
@@ -149,7 +178,7 @@ let random = Mock.Random;
             // 电话号码
             mobile: '17687576301',
             // 身份证号
-            idCard: '450222XXXXX18位',
+            idCard: '450228199999991234',
             // 工号
             workNum: `GJSS00${i + 1}`,
             // 门禁卡号
@@ -163,11 +192,17 @@ let random = Mock.Random;
             // 累计入闸
             intoNum: intNum,
             leaveNum: intNum,
+            pType: setPtype(),
 
         };
         arr.push(obj)
     }
 
+    function setPtype() {
+        let pArr = ['公司员工','协力常驻']
+        let num = Math.round(Math.random() * (pArr.length - 1))
+        return pArr[num]
+    }
     function setSex(val) {
         if (val) {
             return '男';
@@ -259,53 +294,60 @@ let random = Mock.Random;
 
     }
 
-    Mock.mock('/peple/employee/getTable', 'post', arr);
+    Mock.mock('/peple/employee/getTable', 'post', arr.reverse());
 
 })();
 
-// 协力
+// 短期
 (function () {
     let arr = [];
-    for (let i = 0; i < 5; i++) {
+
+    function setInNum() {
+        let iArr = [];
+        for (let i = 320; i < 460; i++) {
+            iArr.push(i)
+        }
+        let num = Math.round(Math.random() * (iArr.length - 1));
+        return iArr[num];
+    }
+
+    for (let i = 0; i < 520; i++) {
+        let intNum = setInNum()
         let obj = {
-            // 编号
-            num: i + 1,
-            // 协力姓名
-            xName: random.cname(),
+            // 员工姓名
+            emName: random.cname(),
             // 性别
-            xSex: setSex(random.bool()),
-            // 协力人员类别
-            xType: setXType(),
-            // 协力常驻人员门禁卡号
-            cardNum: setCardNum(setXType()),
-            // 最近入闸的时间
+            emSex: setSex(random.bool()),
+            // 所在部门
+            depart: setDepart(),
+            // 电话号码
+            mobile: '17687576301',
+            // 身份证号
+            idCard: '450228199999991234',
+            // 工号
+            workNum: `GJSS00${i + 1}`,
+            // 门禁卡号
+            dorCardNum: `GJSS00${i + 1}`,
+            // 最近的入闸时间
             intoTime: getTime(),
             // 最近的出闸时间
-            leaveTime: getLTime(setSate(setXType())),
-            // 访客状态
-            xState: setSate(setXType())
+            leaveTime: getLTime(),
+            // 编号
+            num: i + 1,
+            // 累计入闸
+            intoNum: intNum,
+            leaveNum: intNum,
+            pType: setPtype(),
+
         };
         arr.push(obj)
     }
 
-    function setXType() {
-        let tArr = ['临时', '短期', '常驻'];
-        let num = Math.round(Math.random() * 2);
-        return tArr[num]
+    function setPtype() {
+        let pArr = ['入厂','入司','施工','协力']
+        let num = Math.round(Math.random() * (pArr.length - 1))
+        return pArr[num]
     }
-
-    function setCardNum(val) {
-        let cArr = [];
-        for (let i = 540; i < 600; i++) {
-            cArr.push(`GJSSCZ00${i}`)
-        }
-        let num = Math.round(Math.random() * cArr.length - 1);
-        debugger;
-        if (val === '常驻') {
-            return cArr[num];
-        }
-    }
-
     function setSex(val) {
         if (val) {
             return '男';
@@ -313,6 +355,12 @@ let random = Mock.Random;
             return '女';
         }
     }
+
+    function setDepart() {
+        let dArr = ['总经办', '策划部', '技术部', '销售部'];
+        let num = Math.round(Math.random() * 3);
+        return dArr[num];
+    };
 
     function getTime() {
         const date = new Date();
@@ -323,7 +371,6 @@ let random = Mock.Random;
         // let HH = date.getHours() > 10? date.getHours() : `0${getHours()}`;
         // let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
         // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
-
 
         return `${YY}-${MM}-${DD} ${setHour()}:${setMinute()}:${setSecond()}`;
 
@@ -352,7 +399,8 @@ let random = Mock.Random;
             return hArr[num];
         }
     }
-    function getLTime(val) {
+
+    function getLTime() {
         const date = new Date();
         // console.log(date.getMinutes());
         let YY = date.getFullYear();
@@ -362,10 +410,7 @@ let random = Mock.Random;
         // let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
         // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
 
-        debugger;
-        if(val !== '正在办理业务'){
-            return `${YY}-${MM}-${DD} ${setHour()}:${setMinute()}:${setSecond()}`;
-        }
+        return `${YY}-${MM}-${DD} ${setHour()}:${setMinute()}:${setSecond()}`;
 
 
         function setSecond() {
@@ -393,20 +438,154 @@ let random = Mock.Random;
         }
 
     }
-    let flag = true;
-    function setSate(val) {
-        debugger;
-        if(val !== '常驻'){
-            if(flag){
-                flag = false;
-                return '正在办理业务';
-            }else {
-                flag = true;
-                return '已办完离司';
-            }
+
+    Mock.mock('/peple/xieli/getTable', 'post', arr.reverse());
+
+})();
+
+// 临时
+(function () {
+    let arr = [];
+
+    function setInNum() {
+        let iArr = [];
+        for (let i = 320; i < 460; i++) {
+            iArr.push(i)
+        }
+        let num = Math.round(Math.random() * (iArr.length - 1));
+        return iArr[num];
+    }
+
+    for (let i = 0; i < 520; i++) {
+        let intNum = setInNum()
+        let obj = {
+            // 员工姓名
+            emName: random.cname(),
+            // 性别
+            emSex: setSex(random.bool()),
+            // 所在部门
+            depart: setDepart(),
+            // 电话号码
+            mobile: '17687576301',
+            // 身份证号
+            idCard: '450228199999991234',
+            // 工号
+            workNum: `GJSS00${i + 1}`,
+            // 门禁卡号
+            dorCardNum: `GJSS00${i + 1}`,
+            // 最近的入闸时间
+            intoTime: getTime(),
+            // 最近的出闸时间
+            leaveTime: getLTime(),
+            // 编号
+            num: i + 1,
+            // 累计入闸
+            intoNum: intNum,
+            leaveNum: intNum,
+            pType: setPtype(),
+
+        };
+        arr.push(obj)
+    }
+
+    function setPtype() {
+        let pArr = ['入厂','入司','施工','协力']
+        let num = Math.round(Math.random() * (pArr.length - 1))
+        return pArr[num]
+    }
+    function setSex(val) {
+        if (val) {
+            return '男';
+        } else {
+            return '女';
         }
     }
-    Mock.mock('/peple/xieli/getTable', 'post', arr);
+
+    function setDepart() {
+        let dArr = ['总经办', '策划部', '技术部', '销售部'];
+        let num = Math.round(Math.random() * 3);
+        return dArr[num];
+    };
+
+    function getTime() {
+        const date = new Date();
+        // console.log(date.getMinutes());
+        let YY = date.getFullYear();
+        let MM = date.getMonth() > 10 ? date.getMonth() : `0${date.getMonth()}`;
+        let DD = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`;
+        // let HH = date.getHours() > 10? date.getHours() : `0${getHours()}`;
+        // let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
+        // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
+
+        return `${YY}-${MM}-${DD} ${setHour()}:${setMinute()}:${setSecond()}`;
+
+
+        function setSecond() {
+            let tArr = []
+            for (let i = 0; i < 60; i++) {
+                tArr.push(i > 9 ? i : `0${i}`)
+            }
+            let num = Math.round(Math.random() * (tArr.length - 1));
+            return tArr[num];
+        }
+
+        function setMinute() {
+            let tArr = []
+            for (let i = 0; i < 60; i++) {
+                tArr.push(i > 9 ? i : `0${i}`)
+            }
+            let num = Math.round(Math.random() * (tArr.length - 1));
+            return tArr[num];
+        }
+
+        function setHour() {
+            let hArr = ['08', '09', '10', '11', '12'];
+            let num = Math.round(Math.random() * 3);
+            return hArr[num];
+        }
+    }
+
+    function getLTime() {
+        const date = new Date();
+        // console.log(date.getMinutes());
+        let YY = date.getFullYear();
+        let MM = date.getMonth() > 10 ? date.getMonth() - 1 : `0${date.getMonth() - 1}`;
+        let DD = date.getDate() > 10 ? date.getDate() - 1 : `0${date.getDate() - 1}`;
+        // let HH = date.getHours() > 10? date.getHours() : `0${getHours()}`;
+        // let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
+        // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
+
+        return `${YY}-${MM}-${DD} ${setHour()}:${setMinute()}:${setSecond()}`;
+
+
+        function setSecond() {
+            let tArr = []
+            for (let i = 0; i < 60; i++) {
+                tArr.push(i > 9 ? i : `0${i}`)
+            }
+            let num = Math.round(Math.random() * (tArr.length - 1));
+            return tArr[num];
+        }
+
+        function setMinute() {
+            let tArr = []
+            for (let i = 0; i < 60; i++) {
+                tArr.push(i > 9 ? i : `0${i}`)
+            }
+            let num = Math.round(Math.random() * (tArr.length - 1));
+            return tArr[num];
+        }
+
+        function setHour() {
+            let hArr = ['17', '18', '19', '20', '21'];
+            let num = Math.round(Math.random() * 3);
+            return hArr[num];
+        }
+
+    }
+
+    Mock.mock('/peple/linshi/getTable', 'post', arr.reverse());
+
 })();
 /*
 // System

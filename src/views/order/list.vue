@@ -13,20 +13,14 @@
 
 
 		<el-tabs type="border-card">
-			<el-tab-pane label="公司员工">
+			<el-tab-pane label="公司人员/常驻">
 				<OrderList customer_id=""></OrderList>
 			</el-tab-pane>
-			<el-tab-pane label="协力人员">
+			<el-tab-pane label="短期人员">
 				<Xieli></Xieli>
 			</el-tab-pane>
-			<el-tab-pane label="入司人员">
+			<el-tab-pane label="临时人员">
 				<Rusi></Rusi>
-			</el-tab-pane>
-			<el-tab-pane label="入厂人员">
-				<Ruchang></Ruchang>
-			</el-tab-pane>
-			<el-tab-pane label="施工人员">
-				<Shigong></Shigong>
 			</el-tab-pane>
 		</el-tabs>
 

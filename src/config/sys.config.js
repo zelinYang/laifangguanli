@@ -5,10 +5,10 @@ export default {
 
             menu:[
                 {title:'概览', url:'/', icon:'el-icon-date'},
-                {title:'审批管理', url:'/customer/list', icon:'el-icon-service'},
-                {title:'人员管理', url:'/order/list', icon:'el-icon-edit-outline'},
-                {title:'车辆管理', url:'/goods/list', icon:'el-icon-goods'},
-                {title:'报表管理', url:'/home/counter', icon:'el-icon-sort'},
+                {title:'审批管理', url:'/audit/list', icon:'el-icon-news'},
+                {title:'人员管理', url:'/visit/list', icon:'el-icon-s-custom'},
+                {title:'车辆管理', url:'/visitCart/list', icon:'el-icon-truck'},
+                {title:'报表管理', url:'/table/list', icon:'el-icon-tickets'},
                 {title:'配置管理', url:'/home/system/setup', icon:'el-icon-setting'},
             ],
             api:{

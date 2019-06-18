@@ -33,7 +33,7 @@
         data() {
             return {
                 loading: false,
-                info: {counters: []},
+                info: {counters: [],bars:[]},
                 counter: [
                     {name: "年访客总人数", value: 868},
                     {name: "公司员工", value: 520},
@@ -104,7 +104,8 @@
 
             ReLoad: function () {
                 this.info.counters = this.counter;
-                this.info.bar = this.bars;
+                console.log(this.info.bars)
+                this.info.bars = this.bars;
                 this.loading = false;
                 this.$message({message: '刷新成功', type: 'success'});
             },
