@@ -5,7 +5,7 @@
             <!-- 按钮 -->
             <el-col :span="20">
                 <el-button-group style="margin-right: 10px;">
-                    <el-button type="primary" @click="dialog_add_showing = true">+ 新增预约</el-button>
+                    <el-button type="primary" @click="dialog_add_showing = true">违章信息添加</el-button>
                 </el-button-group>
 
 
@@ -41,9 +41,10 @@
             <el-table-column prop="event" label="违章事件" width=""></el-table-column>
             <el-table-column prop="vSex" label="性别" width="100"></el-table-column>
             <el-table-column prop="property" label="属性" width="100"></el-table-column>
-            <el-table-column prop="depart" label="所在单位" width="100"></el-table-column>
-            <el-table-column prop="mobile" label="手机" width="200"></el-table-column>
-            <el-table-column prop="idCard" label="身份证" width="300"></el-table-column>
+            <el-table-column prop="depart" label="单位" width="100"></el-table-column>
+            <el-table-column prop="mobile" label="手机" width="180"></el-table-column>
+            <el-table-column prop="idCard" label="身份证" width="200"></el-table-column>
+            <el-table-column prop="isToBlake" label="是否列入黑名单" width="100"></el-table-column>
 <!--            <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>-->
 <!--            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>-->
             <el-table-column prop="grade" label="违章等级" width="100">
@@ -80,17 +81,17 @@
 
         <el-dialog title="详情" :visible.sync="dialog_detail_showing" :fullscreen="false" width="50%">
             <el-tabs type="border-card">
-                <el-tab-pane label="访客预约资料">
+                <el-tab-pane label="违章人员资料">
                     <el-form ref="form" :model="customer" label-width="80px">
                         <div style="display: flex;justify-content: space-between">
-                            <el-form-item label="访客姓名">
+                            <el-form-item label="姓名">
                                 <el-input v-model="customer.vName"></el-input>
                             </el-form-item>
                             <el-form-item label="访客性别">
                                 <el-input v-model="customer.vSex"></el-input>
                             </el-form-item>
-                            <el-form-item label="所在单位">
-                                <el-input v-model="customer.company"></el-input>
+                            <el-form-item label="单位">
+                                <el-input v-model="customer.depart"></el-input>
                             </el-form-item>
                         </div>
                         <div style="display: flex;justify-content: space-between">
@@ -100,27 +101,34 @@
                             <el-form-item label="身份证号">
                                 <el-input v-model="customer.idCard"></el-input>
                             </el-form-item>
-                            <el-form-item label="来访目的">
-                                <el-input v-model="customer.target"></el-input>
-                            </el-form-item>
-                        </div>
-                        <div style="display: flex;justify-content: space-between">
                             <el-form-item label="属性">
                                 <el-input v-model="customer.property"></el-input>
                             </el-form-item>
-                            <el-form-item label="类别">
-                                <el-input v-model="customer.times"></el-input>
+                        </div>
+                        <div style="display: flex;">
+                            <el-form-item label="违章事件">
+                                <el-input v-model="customer.event" style="width: 400px;"></el-input>
                             </el-form-item>
-                            <el-form-item label="填表日期">
-                                <el-input v-model="customer.creatTime"></el-input>
+<!--                            <el-form-item label="类别">-->
+<!--                                <el-input v-model="customer.times"></el-input>-->
+<!--                            </el-form-item>-->
+<!--                            <el-form-item label="填表日期">-->
+<!--                                <el-input v-model="customer.creatTime"></el-input>-->
+<!--                            </el-form-item>-->
+
+                            <el-form-item label="黑名单">
+                                <el-switch
+                                        v-model="customer.isToBlake=='是'? true:false">
+                                </el-switch>
                             </el-form-item>
                         </div>
                         <div style="display: flex;justify-content: space-between">
-                            <el-form-item label="状态">
-                                <el-select v-model="customer.state" placeholder="请选择">
-                                    <el-option label="" value="未审批"></el-option>
-                                    <el-option label="通过" value="通过"></el-option>
-                                    <el-option label="不通过" value="不通过"></el-option>
+                            <el-form-item label="违章等级">
+                                <el-select v-model="customer.grade" placeholder="请选择">
+                                    <el-option label="一般" value="一般"></el-option>
+                                    <el-option label="较严重" value="较严重"></el-option>
+                                    <el-option label="较严重" value="较严重"></el-option>
+                                    <el-option label="严重" value="严重"></el-option>
                                 </el-select>
                             </el-form-item>
                         </div>
@@ -134,17 +142,17 @@
         </el-dialog>
 
 
-        <el-dialog title="新增预约" :visible.sync="dialog_add_showing" width="900px">
+        <el-dialog title="违章信息添加" :visible.sync="dialog_add_showing" width="700px">
             <el-form ref="form" :model="form" label-width="80px">
                 <div style="display:flex;justify-content: space-between;">
-                    <el-form-item label="访客姓名">
-                        <el-input v-model="form.vName" placeholder="请输入访客姓名"></el-input>
+                    <el-form-item label="姓名">
+                        <el-input v-model="form.vName" placeholder="请输入姓名"></el-input>
                     </el-form-item>
-                    <el-form-item label="来访目的">
-                        <el-input v-model="form.target" placeholder="请输入来访目的"></el-input>
-                    </el-form-item>
-                    <el-form-item label="所在单位">
-                        <el-input v-model="form.company" placeholder="请输入所在单位"></el-input>
+<!--                    <el-form-item label="来访目的">-->
+<!--                        <el-input v-model="form.target" placeholder="请输入来访目的"></el-input>-->
+<!--                    </el-form-item>-->
+                    <el-form-item label="单位">
+                        <el-input v-model="form.depart" placeholder="请输单位"></el-input>
                     </el-form-item>
                 </div>
                 <div style="display:flex;justify-content: space-between;">
@@ -154,15 +162,31 @@
                     <el-form-item label="身份证号">
                         <el-input v-model="form.idCard" placeholder="请输入身份证号"></el-input>
                     </el-form-item>
-                    <el-form-item label="人数">
-                        <el-input v-model="form.pepleN" placeholder="请输入人数"></el-input>
+<!--                    <el-form-item label="人数">-->
+<!--                        <el-input v-model="form.pepleN" placeholder="请输入人数"></el-input>-->
+<!--                    </el-form-item>-->
+                </div>
+                <div style="display:flex;">
+                    <el-form-item label="违章事件">
+                        <el-input
+                                type="textarea"
+                                :rows="2"
+                                placeholder="请输入内容"
+                                v-model="form.event">
+                        </el-input>
                     </el-form-item>
                 </div>
                 <div style="display:flex; justify-content: space-between;">
-                    <el-form-item label="访客性别">
+                    <el-form-item label="性别">
                         <el-select v-model="form.vSex" placeholder="请选择">
                             <el-option label="男" value="男"></el-option>
                             <el-option label="女" value="女"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="黑名单">
+                        <el-select v-model="form.isToBlake" placeholder="请选择">
+                            <el-option label="是" value="是"></el-option>
+                            <el-option label="否" value="否"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="属性">
@@ -170,25 +194,15 @@
                             <el-option :label="item.label" :value="item.value" v-for="item in form.propertys"></el-option>
                         </el-select>
                     </el-form-item>
-
-                    <el-form-item label="类别">
-                        <el-select v-model="form.times" placeholder="请选择">
+                </div>
+                <div>
+                    <el-form-item label="违章等级">
+                        <el-select v-model="form.grade" placeholder="请选择">
                             <el-option :label="item.label" :value="item.value" v-for="item in form.timess"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>
-                <div style="display:flex;">
-                    <el-form-item label="预约时间">
-                        <el-date-picker
-                                value-format="yyyy-MM-dd HH:mm"
-                                v-model="form.vTime"
-                                type="datetime"
-                                placeholder="选择日期时间"
-                                align="right"
-                                :picker-options="form.pickerOptions">
-                        </el-date-picker>
-                    </el-form-item>
-                </div>
+
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialog_add_showing = false">取 消</el-button>
@@ -233,6 +247,7 @@
                 rowNum: 0,
 
                 form: {
+                    isToBlake:'',
                     state: '未审核',
                     vName: '',
                     vSex: '',
@@ -243,9 +258,7 @@
                     vTime: '',
                     target: '',
                     property: '',
-                    times: '',
-                    date1:'',
-                    date2:'',
+                    grade: '',
                     pickerOptions:{
                         shortcuts: [{
                             text: '今天',
@@ -270,34 +283,30 @@
                     },
                     propertys: [
                         {
-                            value: '入司',
-                            label: '入司'
+                            value: '公司员工',
+                            label: '公司员工'
                         },
                         {
-                            value: '入厂',
-                            label: '入厂'
+                            value: '外来访客',
+                            label: '外来访客'
                         },
-                        {
-                            value: '施工',
-                            label: '施工'
-                        },
-                        {
-                            value: '协力',
-                            label: '协力'
-                        }
                     ],
                     timess: [
                         {
-                            value: '临时',
-                            label: '临时'
+                            value: '一般',
+                            label: '一般'
                         },
                         {
-                            value: '短期',
-                            label: '短期'
+                            value: '轻微',
+                            label: '轻微'
                         },
                         {
-                            value: '常驻',
-                            label: '常驻'
+                            value: '较严重',
+                            label: '较严重'
+                        },
+                        {
+                            value: '严重',
+                            label: '严重'
                         },
                     ],
 

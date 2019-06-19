@@ -16,7 +16,7 @@
           <CustomerListBlock></CustomerListBlock>
       </el-tab-pane>
         <el-tab-pane label="车辆违章">
-            <CustomerListBlock></CustomerListBlock>
+            <Black></Black>
         </el-tab-pane>
     </el-tabs>
 
@@ -36,7 +36,7 @@
 
 <script>
     import CustomerListBlock from './list-block.vue';
-    import VipSet from './vipcard/vip-list.vue';
+    import Black from './blackNameList.vue';
 
     export default {
       data() {
@@ -48,6 +48,6 @@
       mounted() { },
       methods: { },
       computed: { },
-      components: { CustomerListBlock, VipSet }
+      components: { CustomerListBlock,Black }
     }
 </script>

@@ -703,6 +703,7 @@ let random = Mock.Random;
     for (let i = 0; i < 5; i++) {
         let prot = setPro();
         let part = setDepart(prot);
+        let black = setGrade();
         let obj = {
             // 访客姓名
             vName: random.cname(),
@@ -737,10 +738,235 @@ let random = Mock.Random;
             // 访问时长
             times: setTimes(prot),
             // 违章等级
-            grade: setGrade(),
-            event: setEvent(prot)
+            grade: black,
+            event: setEvent(prot),
+            isToBlake: setToB(black)
         };
         arr.push(obj)
+    }
+
+    function setToB(val) {
+        debugger;
+        if (val === '严重'|| val ==='较严重') {
+            return '是'
+        }else{
+            return '否'
+        }
+    }
+
+    function setEvent(val){
+        let eArr = ['现场预约','强行过闸','未预约过闸','来访超时','蒙混过闸'];
+        let aArr = ['不刷卡过闸'];
+        if(val === '外来访客'){
+            let num = Math.round(Math.random() * (eArr.length - 1));
+            return eArr[num];
+        }else {
+            let num = Math.round(Math.random() * (aArr.length - 1));
+            return aArr[num];
+        }
+    }
+
+    function setGrade() {
+        let gArr = ['一般','轻微','较严重','严重'];
+        let num = Math.round(Math.random() * (gArr.length - 1))
+        return gArr[num]
+    }
+
+
+
+    function setDepart(val) {
+        let tArr = [
+            "光明乳业",
+            "Bingosoft",
+            "微游网络",
+            "软通动力",
+            "道一云",
+            "绛门科技",
+            "萌友游戏",
+            "中望软件",
+            "帮啦跑腿",
+            "亚美科技"
+        ];
+        let tErr = ['总经办','策划部','销售部','技术部'];
+        if(val === '外来访客'){
+            let num = Math.round(Math.random() * (tArr.length - 1));
+            return tArr[num];
+        }else {
+            let num = Math.round(Math.random() * (tErr.length - 1));
+            return tErr[num]
+        }
+    }
+
+
+    function setState() {
+        let sArr = ['未审批','通过审批','不通过审批'];
+        let num = Math.round(Math.random() * (sArr.length - 1));
+        return sArr[num];
+    }
+
+    function setSex(val) {
+        if (val) {
+            return '男';
+        } else {
+            return '女';
+        }
+    }
+
+    function getTime() {
+        const date = new Date();
+        // console.log(date.getMinutes());
+        let YY = date.getFullYear();
+        let MM = date.getMonth() > 10 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+        let DD = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`;
+        // let HH = date.getHours() > 10? date.getHours() : `0${getHours()}`;
+        // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
+
+        return `${YY}-${MM}-${DD}`;
+
+
+    }
+
+    function setTimes(val){
+        let tArr = ['临时','短期','常驻'];
+        let tErr = ['临时','短期'];
+        if(val === '协力'){
+            let num = Math.round(Math.random() * (tArr.length - 1));
+            return tArr[num];
+        }else {
+            let num = Math.round(Math.random() * (tErr.length - 1));
+            return tErr[num]
+        }
+    }
+    function setPro(){
+        let pArr = ['公司员工','外来访客'];
+        let num = Math.round(Math.random() * (pArr.length - 1))
+        return pArr[num]
+    }
+
+
+    let flag = true;
+
+    function getVTime() {
+        const date = new Date();
+        // console.log(date.getMinutes());
+        let YY = date.getFullYear();
+        let MM = date.getMonth() > 10 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+        let DD = date.getDate() > 10 ? date.getDate() + 1 : `0${date.getDate() + 1}`;
+        // let HH = date.getHours() > 10? date.getHours() : `0${getHours()}`;
+        // let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
+        // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
+
+        return `${YY}-${MM}-${DD} ${setHour()}:${setMinute()}`;
+
+        function setMinute() {
+            if (flag) {
+                flag = false;
+                return '00';
+            } else {
+                flag = true;
+                return '30'
+            }
+        }
+
+        function setHour() {
+            let hArr = ['10', '12', '14', '15'];
+            let num = Math.round(Math.random() * 3);
+            return hArr[num];
+        }
+    }
+    function setCop() {
+        let copArr = [
+            "光明乳业",
+            "Bingosoft",
+            "微游网络",
+            "软通动力",
+            "道一云",
+            "绛门科技",
+            "萌友游戏",
+            "中望软件",
+            "帮啦跑腿",
+            "亚美科技"
+        ];
+        let num = Math.round(Math.random() * 9);
+        return copArr[num];
+    }
+
+
+    function setFun() {
+        let copArr = ['电话预约', '短信预约', '网络预约'];
+        let num = Math.round(Math.random() * 2);
+        return copArr[num];
+    }
+
+
+    Mock.mock('/weiz/getTable', 'post', arr.reverse());
+})();
+
+// 车辆违章
+(function () {
+    let arr = [];
+    for (let i = 0; i < 5; i++) {
+        let prot = setPro();
+        let part = setDepart(prot);
+        let black = setGrade();
+        let obj = {
+            // 访客姓名
+            vName: random.cname(),
+            //访客性别
+            vSex: setSex(random.bool()),
+            // 所在单位
+            company: setCop(),
+            cName: `粤A${setCName()}`,
+            // 来访目的
+            target: '技术交流/商务交流',
+            // 受访部门
+            depart: part,
+            // 受访人
+            vPeple: 'XXX',
+            // 填表时间
+            creatTime: getTime(),
+            // 将预约的时间
+            vTime: getVTime(),
+            // 编号
+            num: i + 1,
+            // 身份证号
+            idCard: '452228199999999999',
+            // 手机号
+            mobile: '17687576301',
+            // 状态
+            state: setState(),
+            // 预约方式
+            fun: setFun(),
+            // 人数
+            pepleN: 1,
+            // 访客属性
+            property: prot,
+            // 访问时长
+            times: setTimes(prot),
+            // 违章等级
+            grade: black,
+            event: setEvent(prot),
+            isToBlake: setToB(black)
+        };
+        arr.push(obj)
+    }
+
+    function setCName(){
+        let sum = '';
+        for (let i = 0; i < 4; i++) {
+            let rand = Math.round(Math.random() * 9);
+            sum += rand
+        }
+        return sum;
+    }
+
+    function setToB(val) {
+        debugger;
+        if (val === '严重'|| val ==='较严重') {
+            return '是'
+        }else{
+            return '否'
+        }
     }
 
     function setEvent(val){
