@@ -37,24 +37,19 @@
         <el-table :data="rows.slice((currentPage-1)*pagesize,currentPage*pagesize)" v-loading="loading">
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="num" label="编号" width="100"></el-table-column>
-            <el-table-column prop="vName" label="姓名" width=""></el-table-column>
+            <el-table-column prop="vName" label="姓名" width="100"></el-table-column>
             <el-table-column prop="vSex" label="性别" width="100"></el-table-column>
-            <el-table-column prop="property" label="属性" width="100"></el-table-column>
-            <el-table-column prop="times" label="类别" width="200"></el-table-column>
-
-            <el-table-column prop="pepleN" label="人数" width="100"></el-table-column>
+            <el-table-column prop="idCard" label="身份证" width="300"></el-table-column>
             <el-table-column prop="company" label="所在单位" width="100"></el-table-column>
             <el-table-column prop="mobile" label="手机" width="200"></el-table-column>
-            <el-table-column prop="idCard" label="身份证" width="300"></el-table-column>
-            <el-table-column prop="vTime" label="预约时间" width="200"></el-table-column>
-            <el-table-column prop="target" label="来访目的" width="180"></el-table-column>
-<!--            <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>-->
-<!--            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>-->
+            <el-table-column prop="cause" label="违章事由" width=""></el-table-column>
+            <!--            <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>-->
+            <!--            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>-->
             <el-table-column prop="state" label="状态" width="100">
                 <template slot-scope="scope">
                     <el-tag type="info" v-if="scope.row.state == '未审批'">未审批</el-tag>
-                    <el-tag type="success" v-if="scope.row.state == '通过审批'">通过</el-tag>
-                    <el-tag type="warning" v-if="scope.row.state == '不通过审批'">不通过</el-tag>
+                    <el-tag type="success" v-if="scope.row.state == '通过审批'">通过审批</el-tag>
+                    <el-tag type="warning" v-if="scope.row.state == '不通过审批'">不通过审批</el-tag>
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="100">
@@ -122,8 +117,8 @@
                             <el-form-item label="状态">
                                 <el-select v-model="customer.state" placeholder="请选择">
                                     <el-option label="" value="未审批"></el-option>
-                                    <el-option label="通过" value="通过"></el-option>
-                                    <el-option label="不通过" value="不通过"></el-option>
+                                    <el-option label="通过审批" value="通过审批"></el-option>
+                                    <el-option label="不通过审批" value="不通过审批"></el-option>
                                 </el-select>
                             </el-form-item>
                         </div>
@@ -209,6 +204,7 @@
     import AddForm from '@/views/customer/add-form.vue';
 
     export default {
+        name: 'blackNameList',
         props: {},
         data() {
             return {

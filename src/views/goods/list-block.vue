@@ -5,35 +5,50 @@
       <!-- 按钮 -->
       <el-col :span="20">
         <el-button-group style="margin-right: 10px;">
-          <el-button type="primary" @click="dialog_new_showing=true">+ 添加商品</el-button>
-        </el-button-group>
-
-        <el-button-group style="margin-right: 10px;">
           <el-button icon="el-icon-refresh" @click="ReLoad()" :loading="loading">刷新</el-button>
         </el-button-group>
       </el-col>
 
       <!-- 搜索框 -->
       <el-col :span="4">
-        <el-input placeholder="" class="input-with-select" prefix-icon="el-icon-search" auto-complete="true" @change="" style="max-width: 280px; float: right;" :clearable="true"></el-input>
+        <el-input placeholder="请输入要查找的车牌号" class="input-with-select" prefix-icon="el-icon-search"
+                  @change="searchName" v-model="sousuo" style="max-width: 280px; float: right;"
+                  :clearable="true"></el-input>
       </el-col>
     </el-row>
 
+
+    <!-- 筛选条件 -->
+    <div class="filter_box">
+      <div>
+
+      </div>
+    </div>
+
     <!-- 表格 -->
-    <el-table :data="rows.rows" v-loading="loading">
+    <el-table :data="rows.slice((currentPage-1)*pagesize,currentPage*pagesize)" v-loading="loading">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="id" label="编号" width="100"></el-table-column>
-      <el-table-column prop="title" label="名称"></el-table-column>
-      <el-table-column prop="price" label="价格" width="300"></el-table-column>
-      <el-table-column prop="create_time" label="创建时间" width="180"></el-table-column>
-      <el-table-column prop="status_title" label="状态" width="100">
-          <template slot-scope="scope">
-            <el-tag :type="scope.row.status == '0' ? 'warning' : 'success'">{{scope.row.status_title}}</el-tag>
-          </template>
+      <el-table-column prop="num" label="编号" width="100"></el-table-column>
+      <el-table-column prop="cName" label="车牌号" width=""></el-table-column>
+      <el-table-column prop="cpName" label="车主姓名" width="100"></el-table-column>
+      <el-table-column prop="mobile" label="手机号" width="180"></el-table-column>
+      <el-table-column prop="time" label="记录时间" width="200"></el-table-column>
+
+      <!--            <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>-->
+      <!--            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>-->
+      <el-table-column prop="state" label="属性" width="100">
+        <template slot-scope="scope">
+          <el-tag type="info" v-if="scope.row.state == '公司车'">公司车</el-tag>
+          <el-tag type="success" v-if="scope.row.state == '通勤车'">通勤车</el-tag>
+          <el-tag type="warning" v-if="scope.row.state == '办证车'">办证车</el-tag>
+          <el-tag type=" " v-if="scope.row.state == '自备车'">自备车</el-tag>
+        </template>
       </el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
-          <el-button size="mini" @click="item=scope.row; dialog_detail_showing=true; " style="margin-right: 10px;">详情</el-button>
+          <el-button size="mini" @click="deleteR(scope.row)"
+                     style="margin-right: 10px;">删除记录
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -41,95 +56,137 @@
 
     <!-- 分页 -->
     <el-pagination
-    style="margin:20px 0;"
-    @size-change="handleSizeChange"
-    @current-change="handleCurrentChange"
-    background
-    :page-sizes="[10, 20, 50, 100]"
-    :current-page="list_input.page"
-    :page-size="list_input.pagesize"
-    layout="total, sizes, prev, pager, next, jumper"
-    :total="rows.count">
+            style="margin:20px 0;"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            background
+            :page-sizes="[10, 20, 50, 100]"
+            :current-page="currentPage"
+            :page-size="pagesize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="rows.length">
     </el-pagination>
-
-
-
-    <el-dialog title="详情" :visible.sync="dialog_detail_showing" width="1200px" append-to-body>
-      <FormNew :id="item.id" v-if="dialog_detail_showing" @closewindows="dialog_detail_showing=false; ReLoad();"></FormNew>
-    </el-dialog>
-
-
-
-    <el-dialog title="添加" :visible.sync="dialog_new_showing" width="1200px" append-to-body>
-      <FormNew id="" v-if="dialog_new_showing" @closewindows="dialog_new_showing=false; ReLoad();"></FormNew>
-    </el-dialog>
 
 
   </div>
 </template>
 
 
-
-
-
 <script>
-    import Detail from './detail.vue';
-    import FormNew from './form-new.vue';
+  import Detail from '@/views/customer/detail.vue';
+  import AddForm from '@/views/customer/add-form.vue';
 
-    export default {
-      props: {
-          customer_id:{},
-      },
-      data() {
-        return {
-          loading: false,
-          dialog_detail_showing: false,
-          dialog_new_showing: false,
-          rows:[],
-          item:{},
+  export default {
+    props: {},
+    data() {
+      return {
+        sousuo: '',
+        loading: false,
+        dialog_detail_showing: false,
+        dialog_add_showing: false,
+        rows: [],
+        riws: [],
+        customer: {},
+        user_pic: 'this.src=' + require('@/assets/user.png'),
 
 
-          list_input:{
-            search:'', 
-            page:1, 
-            pagesize:10, 
-            filter: {},
-            customer_id:'',
-          }
-        };
-      },
+        // list_input: {
+        //     from_key: '',
+        //     search: '',
+        //     page: 1,
+        //     page_size: 10,
+        //     filter: {vip_vipcard_id: '', vip_store_id: '', mobile: '', wx_sex: '',},
+        // },
 
-      mounted() {
-        this.ReLoad();
+        currentPage: 1,
+        pagesize: 10,
+
+        rowNum: 0,
+
+
+      };
+    },
+
+    mounted() {
+      this.ReLoad();
+    },
+    methods: {
+      ReLoad() {
+        this.loading = true;
+        this.axios.post('/cart/neibu').then((res) => {
+          this.rows = res.data;
+          // this.riws = res.data;
+          console.log(res.data);
+          this.loading = false;
+        });
       },
-      methods: {
-        ReLoad(){
-          this.loading = true;
-          this.list_input.customer_id = this.customer_id;
-          this.axios.post("/shop/admin_api/list_goods", this.list_input).then((res) => {
-              this.rows = res.data.data;
-              this.loading = false;
-          });
-        },
-        handleSizeChange: function(val) {
-          this.list_input.page = 1;
-          this.list_input.pagesize = val;
-          this.ReLoad();
-        },
-        handleCurrentChange: function(val) {
-          this.list_input.page = val;
-          this.ReLoad();
-        },
+      handleSizeChange(val) {
+        this.pagesize = val;
       },
-      computed: { },
-      components: { Detail,FormNew },
-      watch: {
-          customer_id:{
-            //immediate:true,
-            handler:function(){
-              this.ReLoad();
-            }
-          }
+      handleCurrentChange(val) {
+        this.currentPage = val;
       },
-    }
+      searchName() {
+        this.$message({message: '此功能尚在开发中', type: 'warning'});
+      },
+      showDetail(val) {
+        this.customer = JSON.parse(JSON.stringify(val));
+        this.rowNum = parseInt(this.customer.num) -1;
+        this.dialog_detail_showing = true;
+        console.log(this.customer);
+      },
+      deleteR(val){
+        console.log(val.num);
+        this.rows.splice(val.num - 1,1);
+      },
+      passA(){
+        this.rows.splice(this.rowNum,1,this.customer)
+        console.log(this.rows[this.rowNum]);
+        this.dialog_detail_showing = false;
+      },
+      desPass(){
+        this.rows[this.rowNum].state = '不通过审批';
+        this.dialog_detail_showing = false;
+      },
+      proChenge(val){
+        let pArr = [
+          {
+            value: '临时',
+            label: '临时'
+          },
+          {
+            value: '短期',
+            label: '短期'
+          },
+          {
+            value: '常驻',
+            label: '常驻'
+          },
+        ];
+        let pErr = [
+          {
+            value: '临时',
+            label: '临时'
+          },
+          {
+            value: '短期',
+            label: '短期'
+          },
+        ]
+        if(val === '协力'){
+          this.form.timess = pArr;
+        }else {
+          this.form.timess = pErr;
+        }
+      },
+      saveAdd(){
+        console.log(this.form.vTime)
+        this.form.num = this.rows.length + 1
+        this.rows.unshift(JSON.parse(JSON.stringify(this.form)));
+        this.dialog_add_showing =false;
+      }
+    },
+    computed: {},
+    components: {Detail, AddForm}
+  }
 </script>

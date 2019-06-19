@@ -25,7 +25,7 @@
             <el-table-column prop="mobile" label="手机" width="200"></el-table-column>
             <el-table-column prop="idCard" label="身份证" width="250"></el-table-column>
             <el-table-column prop="intoTime" label="记录时间" width="180"></el-table-column>
-            <el-table-column prop="pType" label="类别" width="100">
+            <el-table-column prop="pType" label="属性" width="100">
                 <template slot-scope="scope">
                     <el-tag type="info" v-if="scope.row.pType == '入司'">入司</el-tag>
                     <el-tag type=" " v-if="scope.row.pType == '入厂'">入厂</el-tag>
@@ -113,6 +113,7 @@
                 // this.list_input.customer_id = this.customer_id;
                 this.axios.post('/peple/linshi/getTable').then((res) => {
                     this.rows = res.data;
+                    this.row = res.data
                     this.loading = false;
                 });
             },
@@ -123,6 +124,13 @@
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.ReLoad();
+            },
+            deleteRow(val){
+                console.log(val);
+                let number = val.num;
+                let start = this.row.length - number
+                this.row.splice(start,1)
+                this.rows = this.row
             },
         },
         computed: { },

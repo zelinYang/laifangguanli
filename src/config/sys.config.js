@@ -6,6 +6,7 @@ export default {
             menu:[
                 {title:'概览', url:'/', icon:'el-icon-date'},
                 {title:'审批管理', url:'/audit/list', icon:'el-icon-news'},
+                {title:'违章管理', url:'/weiz/list', icon:'el-icon-video-camera-solid'},
                 {title:'人员管理', url:'/visit/list', icon:'el-icon-s-custom'},
                 {title:'车辆管理', url:'/visitCart/list', icon:'el-icon-truck'},
                 {title:'报表管理', url:'/table/list', icon:'el-icon-tickets'},

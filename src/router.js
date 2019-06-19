@@ -8,6 +8,7 @@ export default new Router({
     { path: '/login',    component: () => import('./views/Login.vue') },
     { path: '/',                    component: () => import('./views/home/index.vue') },
     { path: '/audit/list',       component: () => import('./views/customer/list.vue') },
+    { path: '/weiz/list',       component: () => import('./views/wezhang/list.vue') },
     { path: '/customer/vip-list',   component: () => import('./views/customer/vipcard/vip-list.vue') },
     { path: '/visit/list',          component: () => import('./views/order/list.vue') },
     { path: '/visitCart/list',          component: () => import('./views/goods/list.vue') },

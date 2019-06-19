@@ -2,8 +2,8 @@
   <div>
     <div style="margin-bottom: 20px;">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item>审批管理</el-breadcrumb-item>
-          <el-breadcrumb-item>访客预约列表</el-breadcrumb-item>
+          <el-breadcrumb-item>违章管理</el-breadcrumb-item>
+          <el-breadcrumb-item>违章列表</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
 
@@ -12,10 +12,10 @@
 <!--    </div>-->
 
     <el-tabs type="border-card">
-      <el-tab-pane label="访客预约列表">
+      <el-tab-pane label="人员违章">
           <CustomerListBlock></CustomerListBlock>
       </el-tab-pane>
-        <el-tab-pane label="黑名单列表">
+        <el-tab-pane label="车辆违章">
             <CustomerListBlock></CustomerListBlock>
         </el-tab-pane>
     </el-tabs>

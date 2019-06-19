@@ -26,7 +26,7 @@
       <el-table-column prop="idCard" label="身份证" width="250"></el-table-column>
       <el-table-column prop="dorCardNum" label="工卡号" width="180"></el-table-column>
       <el-table-column prop="intoTime" label="记录时间" width="180"></el-table-column>
-      <el-table-column prop="pType" label="类别" width="100">
+      <el-table-column prop="pType" label="属性" width="100">
         <template slot-scope="scope">
           <el-tag type="success" v-if="scope.row.pType == '公司员工'">公司员工</el-tag>
           <el-tag type=" " v-if="scope.row.pType == '协力常驻'">协力常驻</el-tag>
@@ -117,11 +117,11 @@
           });
         },
         deleteRow(val){
-          // console.log(val);
-          let start = val.num - 1;
+          console.log(val);
+          let number = val.num;
+          let start = this.row.length - number
           this.row.splice(start,1)
           this.rows = this.row
-          console.log(this.rows);
         },
         handleSizeChange(val) {
           this.pagesize = val;
