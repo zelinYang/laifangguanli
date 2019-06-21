@@ -113,16 +113,31 @@
           // this.list_input.customer_id = this.customer_id;
           this.axios.post('/peple/employee/getTable').then((res) => {
               this.rows = res.data;
-              this.row = this.rows
+              this.row = this.rows;
               this.loading = false;
           });
         },
         deleteRow(val){
+          this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            let number = val.num;
+            let start = this.row.length - number;
+            this.row.splice(start,1);
+            this.rows = this.row
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
           console.log(val);
-          let number = val.num;
-          let start = this.row.length - number
-          this.row.splice(start,1)
-          this.rows = this.row
         },
         handleSizeChange(val) {
           this.pagesize = val;

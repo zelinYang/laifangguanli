@@ -768,7 +768,6 @@ let random = Mock.Random;
         return Math.round(Math.random() *10)
     }
     function setToB(val) {
-        debugger;
         if (val === '严重'|| val ==='较严重') {
             return '是'
         }else{
@@ -998,7 +997,7 @@ let random = Mock.Random;
     }
 
     function setToB(val) {
-        debugger;
+        // debugger;
         if (val === '严重'|| val ==='较严重') {
             return '是'
         }else{

@@ -10,7 +10,7 @@
 
 
                 <el-button-group style="margin-right: 10px;">
-                    <el-button type="danger" icon="el-icon-delete" @click="dialog_add_showing = true">批量删除</el-button>
+                    <el-button type="danger" :disabled="btnDe" icon="el-icon-delete" @click="deleteChecked">批量删除</el-button>
                 </el-button-group>
                 <el-button-group style="margin-right: 10px;">
                     <el-button icon="el-icon-refresh" @click="ReLoad()" :loading="loading">刷新</el-button>
@@ -20,7 +20,7 @@
             <!-- 搜索框 -->
             <el-col :span="4">
                 <el-input placeholder="请输入要查找人的姓名" class="input-with-select" prefix-icon="el-icon-search"
-                          @change="searchName" v-model="sousuo" style="max-width: 280px; float: right;"
+                          @change="searchName(sousuo)" v-model="sousuo" style="max-width: 280px; float: right;"
                           :clearable="true"></el-input>
             </el-col>
         </el-row>
@@ -34,7 +34,7 @@
         </div>
 
         <!-- 表格 -->
-        <el-table :data="rows.slice((currentPage-1)*pagesize,currentPage*pagesize)" v-loading="loading">
+        <el-table :data="rows.slice((currentPage-1)*pagesize,currentPage*pagesize)" @selection-change="checkedRow" v-loading="loading">
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="num" label="编号" width="100"></el-table-column>
             <el-table-column prop="vName" label="姓名" width=""></el-table-column>
@@ -109,19 +109,28 @@
                         </div>
                         <div style="display: flex;justify-content: space-between">
                             <el-form-item label="属性">
-                                <el-input v-model="customer.property"></el-input>
-                            </el-form-item>
-                            <el-form-item label="类别">
-                                <el-input v-model="customer.times"></el-input>
+                                <el-select v-model="customer.property" placeholder="请选择">
+                                    <el-option label="协力" value="协力"></el-option>
+                                    <el-option label="入司" value="入司"></el-option>
+                                    <el-option label="入厂" value="入厂"></el-option>
+                                    <el-option label="施工" value="施工"></el-option>
+                                </el-select>
                             </el-form-item>
                             <el-form-item label="填表日期">
-                                <el-input v-model="customer.creatTime"></el-input>
+                                <el-select v-model="customer.times" placeholder="请选择">
+                                    <el-option label="临时" value="临时"></el-option>
+                                    <el-option label="短期" value="长期"></el-option>
+                                    <el-option label="常驻（协力）" value="常驻（协力）"></el-option>
+                                </el-select>
                             </el-form-item>
                         </div>
                         <div style="display: flex;justify-content: space-between">
+                            <el-form-item label="填表日期">
+                                <el-input v-model="customer.creatTime"></el-input>
+                            </el-form-item>
                             <el-form-item label="状态">
                                 <el-select v-model="customer.state" placeholder="请选择">
-                                    <el-option label="" value="未审批"></el-option>
+                                    <el-option label="未审批" value="未审批"></el-option>
                                     <el-option label="通过" value="通过"></el-option>
                                     <el-option label="不通过" value="不通过"></el-option>
                                 </el-select>
@@ -218,6 +227,7 @@
                 dialog_add_showing: false,
                 rows: [],
                 riws: [],
+                btnDe: false,
                 customer: {},
                 user_pic: 'this.src=' + require('@/assets/user.png'),
 
@@ -233,7 +243,7 @@
                 currentPage: 1,
                 pagesize: 10,
 
-                rowNum: 0,
+                rowNum: [],
 
                 form: {
                     state: '未审核',
@@ -271,6 +281,17 @@
                             }
                         }]
                     },
+                    rules:{
+                        vName: [{required: true,message: '不能为空',trigger: 'blur'}],
+                        target: [{required: true,message: '不能为空',trigger: 'blur'}],
+                        company: [{required: true,message: '不能为空',trigger: 'blur'}],
+                        mobile: [{required: true,message: '不能为空',trigger: 'blur'}],
+                        idCard: [{required: true,message: '不能为空',trigger: 'blur'}],
+                        pepleN: [{required: true,message: '不能为空',trigger: 'blur'}],
+                        vSex: [{required: true,message: '不能为空',trigger: 'blur'}],
+                        property: [{required: true,message: '不能为空',trigger: 'blur'}],
+                        times: [{required: true,message: '不能为空',trigger: 'blur'}],
+                    },
                     propertys: [
                         {
                             value: '入司',
@@ -304,7 +325,7 @@
                         },
                     ],
 
-                }
+                },
             };
         },
 
@@ -316,7 +337,7 @@
                 this.loading = true;
                 this.axios.post('/vistor/getTable').then((res) => {
                     this.rows = res.data;
-                    // this.riws = res.data;
+                    this.riws = res.data;
                     console.log(res.data);
                     this.loading = false;
                 });
@@ -327,7 +348,7 @@
             handleCurrentChange(val) {
                 this.currentPage = val;
             },
-            searchName() {
+            searchName(val) {
                 let oResult = this.rows.filter(item => {
                     if(item.vName === val){
                         return item
@@ -379,7 +400,7 @@
                         value: '短期',
                         label: '短期'
                     },
-                ]
+                ];
                 if(val === '协力'){
                     this.form.timess = pArr;
                 }else {
@@ -387,10 +408,49 @@
                 }
             },
             saveAdd(){
-                console.log(this.form.vTime)
-                this.form.num = this.rows.length + 1
+                console.log(this.form.vTime);
+                this.form.num = this.rows.length + 1;
                 this.rows.unshift(JSON.parse(JSON.stringify(this.form)));
                 this.dialog_add_showing =false;
+            },
+
+            checkedRow(selection){
+                let arr = [];
+                 selection.forEach((item) => {
+                     arr.push(item.num)
+                     // console.log(arr);
+                });
+                this.rowNum = arr;
+                console.log(this.rowNum);
+
+            },
+            deleteChecked(){
+                if(this.rowNum.length < 1){
+                    this.$message({
+                        message: '请选择内容',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                this.$confirm('此操作将永久删除这些内容, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.rowNum.forEach((item) => {
+                        this.rows.splice(this.rows.length - item,1)
+                        // console.log(this.rows[item])
+                    });
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
         },
         computed: {},

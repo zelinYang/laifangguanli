@@ -10,7 +10,7 @@
 
 
                 <el-button-group style="margin-right: 10px;">
-                    <el-button type="danger" icon="el-icon-delete" @click="dialog_add_showing = true">批量删除</el-button>
+                    <el-button type="danger" icon="el-icon-delete" @click="deleteChecked">批量删除</el-button>
                 </el-button-group>
                 <el-button-group style="margin-right: 10px;">
                     <el-button icon="el-icon-refresh" @click="ReLoad()" :loading="loading">刷新</el-button>
@@ -20,7 +20,7 @@
             <!-- 搜索框 -->
             <el-col :span="4">
                 <el-input placeholder="请输入要查找人的姓名" class="input-with-select" prefix-icon="el-icon-search"
-                          @change="searchName" v-model="sousuo" style="max-width: 280px; float: right;"
+                          @change="searchName(sousuo)" v-model="sousuo" style="max-width: 280px; float: right;"
                           :clearable="true"></el-input>
             </el-col>
         </el-row>
@@ -34,7 +34,7 @@
         </div>
 
         <!-- 表格 -->
-        <el-table :data="rows.slice((currentPage-1)*pagesize,currentPage*pagesize)" v-loading="loading">
+        <el-table :data="rows.slice((currentPage-1)*pagesize,currentPage*pagesize)" @selection-change="checkedRow" v-loading="loading">
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="num" label="编号" width="100"></el-table-column>
             <el-table-column prop="vName" label="姓名" width="100"></el-table-column>
@@ -236,8 +236,6 @@
                 currentPage: 1,
                 pagesize: 10,
 
-                rowNum: 0,
-
                 form: {
                     rongNu: 1,
                     isToBlake:'',
@@ -302,6 +300,8 @@
                             label: '严重'
                         },
                     ],
+                    rowNum: [],
+                    rowNumq: 0
 
                 }
             };
@@ -329,22 +329,32 @@
             handleCurrentChange(val) {
                 this.currentPage = val;
             },
-            searchName() {
-                this.$message({message: '此功能尚在开发中', type: 'warning'});
+            searchName(val) {
+                let oResult = this.rows.filter(item => {
+                    if(item.vName === val){
+                        return item
+                    }
+                });
+
+                if(val === ''){
+                    this.ReLoad();
+                }else {
+                    this.rows = oResult;
+                }
             },
             showDetail(val) {
                 this.customer = val;
-                this.rowNum = this.customer.num - 1;
+                this.rowNumq = this.customer.num - 1;
                 this.dialog_detail_showing = true;
                 console.log(this.customer);
             },
             passA(){
-                this.rows.splice(this.rowNum,1,this.customer);
-                console.log(this.rows[this.rowNum]);
+                this.rows.splice(this.rowNumq,1,this.customer);
+                console.log(this.rows[this.rowNumq]);
                 this.dialog_detail_showing = false;
             },
             desPass(){
-                this.rows[this.rowNum].state = '不通过审批';
+                this.rows[this.rowNumq].state = '不通过审批';
                 this.dialog_detail_showing = false;
             },
             proChenge(val){
@@ -413,7 +423,44 @@
                 }else {
                     this.customer.isToBlake = '否'
                 }
+            },
+            checkedRow(selection){
+                let arr = [];
+                selection.forEach((item) => {
+                    arr.push(item.num)
+                    // console.log(arr);
+                });
+                this.rowNum = arr;
+                console.log(this.rowNum);
 
+            },
+            deleteChecked(){
+                if(this.rowNum.length < 1){
+                    this.$message({
+                        message: '请选择内容',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                this.$confirm('此操作将永久删除这些内容, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.rowNum.forEach((item) => {
+                        this.rows.splice(this.rows.length - item,1)
+                        // console.log(this.rows[item])
+                    });
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
         },
         computed: {},

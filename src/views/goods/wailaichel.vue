@@ -102,7 +102,7 @@
                 currentPage: 1,
                 pagesize: 10,
 
-                rowNum: 0,
+                rowNum: [],
 
 
             };
@@ -140,7 +140,32 @@
                 }
             },
             deleteR(val){
-                console.log(val.num);
+                if(this.rowNum.length < 1){
+                    this.$message({
+                        message: '请选择内容',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let number = val.num;
+                    let start = this.row.length - number;
+                    this.row.splice(start,1);
+                    this.rows = this.row
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
         },
         computed: {},
