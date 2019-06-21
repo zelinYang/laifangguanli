@@ -235,6 +235,7 @@
 
                 currentPage: 1,
                 pagesize: 10,
+                rowNum: [ ],
 
                 form: {
                     rongNu: 1,
@@ -300,7 +301,6 @@
                             label: '严重'
                         },
                     ],
-                    rowNum: [],
                     rowNumq: 0
 
                 }
