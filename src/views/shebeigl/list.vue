@@ -2,8 +2,8 @@
   <div>
     <div style="margin-bottom: 20px;">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item>审批管理</el-breadcrumb-item>
-          <el-breadcrumb-item>访客预约列表</el-breadcrumb-item>
+          <el-breadcrumb-item>设备管理</el-breadcrumb-item>
+          <el-breadcrumb-item>所有设备</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
 
@@ -12,9 +12,12 @@
 <!--    </div>-->
 
     <el-tabs type="border-card">
-      <el-tab-pane label="访客预约列表">
+      <el-tab-pane label="设备列表">
           <CustomerListBlock></CustomerListBlock>
       </el-tab-pane>
+        <el-tab-pane label="">
+            <Black></Black>
+        </el-tab-pane>
     </el-tabs>
 
 
@@ -33,7 +36,7 @@
 
 <script>
     import CustomerListBlock from './list-block.vue';
-    import VipSet from './vipcard/vip-list.vue';
+    import Black from './blackNameList.vue';
 
     export default {
       data() {
@@ -45,6 +48,6 @@
       mounted() { },
       methods: { },
       computed: { },
-      components: { CustomerListBlock, VipSet }
+      components: { CustomerListBlock,Black }
     }
 </script>

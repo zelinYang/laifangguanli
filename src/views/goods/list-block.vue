@@ -127,7 +127,16 @@
         this.currentPage = val;
       },
       searchName() {
-        this.$message({message: '此功能尚在开发中', type: 'warning'});
+        let oResult = this.rows.filter(item => {
+          if(item.cName === val){
+            return item
+          }
+        });
+        if(val === ''){
+          this.ReLoad();
+        }else {
+          this.rows = oResult;
+        }
       },
       showDetail(val) {
         this.customer = JSON.parse(JSON.stringify(val));
@@ -137,7 +146,7 @@
       },
       deleteR(val){
         console.log(val.num);
-        this.rows.splice(val.num - 1,1);
+        this.rows.splice(this.rows.length - val.num,1);
       },
       passA(){
         this.rows.splice(this.rowNum,1,this.customer)

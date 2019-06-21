@@ -4,7 +4,7 @@ export default {
             ver: '1.2',
 
             menu:[
-                {title:'概览', url:'/', icon:'el-icon-date'},
+                {title:'概览', url:'/index', icon:'el-icon-date'},
                 {title:'审批管理', url:'/audit/list', icon:'el-icon-news'},
                 {title:'违章管理', url:'/weiz/list', icon:'el-icon-video-camera-solid'},
                 {title:'人员管理', url:'/visit/list', icon:'el-icon-s-custom'},
@@ -13,7 +13,7 @@ export default {
                 {title:'配置管理', url:'/home/system/setup', icon:'el-icon-setting'},
             ],
             api:{
-            	login: '/index/user/trylogin',
+            	login: '/index/user',
 
             	coustomer_list: '/customer/admin_api/list_customer',
             	coustomer_info: '/customer/admin_api/get_customer',

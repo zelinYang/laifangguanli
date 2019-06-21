@@ -5,13 +5,9 @@
             <!-- 按钮 -->
             <el-col :span="20">
                 <el-button-group style="margin-right: 10px;">
-                    <el-button type="primary" @click="dialog_add_showing = true">+ 新增预约</el-button>
+                    <el-button type="primary" @click="dialog_add_showing = true">+新设备添加</el-button>
                 </el-button-group>
 
-
-                <el-button-group style="margin-right: 10px;">
-                    <el-button type="danger" icon="el-icon-delete" @click="dialog_add_showing = true">批量删除</el-button>
-                </el-button-group>
                 <el-button-group style="margin-right: 10px;">
                     <el-button icon="el-icon-refresh" @click="ReLoad()" :loading="loading">刷新</el-button>
                 </el-button-group>
@@ -19,7 +15,7 @@
 
             <!-- 搜索框 -->
             <el-col :span="4">
-                <el-input placeholder="请输入要查找人的姓名" class="input-with-select" prefix-icon="el-icon-search"
+                <el-input placeholder="请输入要查找人的车主姓名" class="input-with-select" prefix-icon="el-icon-search"
                           @change="searchName" v-model="sousuo" style="max-width: 280px; float: right;"
                           :clearable="true"></el-input>
             </el-col>
@@ -37,24 +33,22 @@
         <el-table :data="rows.slice((currentPage-1)*pagesize,currentPage*pagesize)" v-loading="loading">
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="num" label="编号" width="100"></el-table-column>
-            <el-table-column prop="vName" label="姓名" width=""></el-table-column>
-            <el-table-column prop="vSex" label="性别" width="100"></el-table-column>
+            <el-table-column prop="vName" label="车主姓名" width="100"></el-table-column>
+            <el-table-column prop="event" label="违章事件" width=""></el-table-column>
+<!--            <el-table-column prop="vSex" label="性别" width="100"></el-table-column>-->
             <el-table-column prop="property" label="属性" width="100"></el-table-column>
-            <el-table-column prop="times" label="类别" width="200"></el-table-column>
-
-            <el-table-column prop="pepleN" label="人数" width="100"></el-table-column>
-            <el-table-column prop="company" label="所在单位" width="100"></el-table-column>
-            <el-table-column prop="mobile" label="手机" width="200"></el-table-column>
-            <el-table-column prop="idCard" label="身份证" width="300"></el-table-column>
-            <el-table-column prop="vTime" label="预约时间" width="200"></el-table-column>
-            <el-table-column prop="target" label="来访目的" width="180"></el-table-column>
-<!--            <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>-->
-<!--            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>-->
-            <el-table-column prop="state" label="状态" width="100">
+<!--            <el-table-column prop="depart" label="单位" width="100"></el-table-column>-->
+            <el-table-column prop="mobile" label="手机" width="180"></el-table-column>
+            <el-table-column prop="cName" label="车牌号" width="100"></el-table-column>
+            <el-table-column prop="rongNu" label="违章次数" width="100"></el-table-column>
+            <!--            <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>-->
+            <!--            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>-->
+            <el-table-column prop="grade" label="违章等级" width="100">
                 <template slot-scope="scope">
-                    <el-tag type="info" v-if="scope.row.state == '未审批'">未审批</el-tag>
-                    <el-tag type="success" v-if="scope.row.state == '通过审批'">通过</el-tag>
-                    <el-tag type="warning" v-if="scope.row.state == '不通过审批'">不通过</el-tag>
+                    <el-tag type="" v-if="scope.row.grade == '一般'">一般</el-tag>
+                    <el-tag type="success" v-if="scope.row.grade == '轻微'">轻微</el-tag>
+                    <el-tag type="warning" v-if="scope.row.grade == '较严重'">较严重</el-tag>
+                    <el-tag type="danger" v-if="scope.row.grade == '严重'">严重</el-tag>
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="100">
@@ -83,17 +77,17 @@
 
         <el-dialog title="详情" :visible.sync="dialog_detail_showing" :fullscreen="false" width="50%">
             <el-tabs type="border-card">
-                <el-tab-pane label="访客预约资料">
+                <el-tab-pane label="违章人员资料">
                     <el-form ref="form" :model="customer" label-width="80px">
                         <div style="display: flex;justify-content: space-between">
-                            <el-form-item label="访客姓名">
+                            <el-form-item label="车主姓名">
                                 <el-input v-model="customer.vName"></el-input>
                             </el-form-item>
-                            <el-form-item label="访客性别">
+                            <el-form-item label="性别">
                                 <el-input v-model="customer.vSex"></el-input>
                             </el-form-item>
-                            <el-form-item label="所在单位">
-                                <el-input v-model="customer.company"></el-input>
+                            <el-form-item label="单位">
+                                <el-input v-model="customer.depart"></el-input>
                             </el-form-item>
                         </div>
                         <div style="display: flex;justify-content: space-between">
@@ -103,27 +97,34 @@
                             <el-form-item label="身份证号">
                                 <el-input v-model="customer.idCard"></el-input>
                             </el-form-item>
-                            <el-form-item label="来访目的">
-                                <el-input v-model="customer.target"></el-input>
-                            </el-form-item>
-                        </div>
-                        <div style="display: flex;justify-content: space-between">
                             <el-form-item label="属性">
                                 <el-input v-model="customer.property"></el-input>
                             </el-form-item>
-                            <el-form-item label="类别">
-                                <el-input v-model="customer.times"></el-input>
+                        </div>
+                        <div style="display: flex;">
+                            <el-form-item label="违章事件">
+                                <el-input v-model="customer.event" style="width: 400px;"></el-input>
                             </el-form-item>
-                            <el-form-item label="填表日期">
-                                <el-input v-model="customer.creatTime"></el-input>
+                            <!--                            <el-form-item label="类别">-->
+                            <!--                                <el-input v-model="customer.times"></el-input>-->
+                            <!--                            </el-form-item>-->
+                            <!--                            <el-form-item label="填表日期">-->
+                            <!--                                <el-input v-model="customer.creatTime"></el-input>-->
+                            <!--                            </el-form-item>-->
+
+                            <el-form-item label="黑名单">
+                                <el-switch
+                                        v-model="customer.isToBlake=='是'? true:false">
+                                </el-switch>
                             </el-form-item>
                         </div>
                         <div style="display: flex;justify-content: space-between">
-                            <el-form-item label="状态">
-                                <el-select v-model="customer.state" placeholder="请选择">
-                                    <el-option label="" value="未审批"></el-option>
-                                    <el-option label="通过" value="通过"></el-option>
-                                    <el-option label="不通过" value="不通过"></el-option>
+                            <el-form-item label="违章等级">
+                                <el-select v-model="customer.grade" placeholder="请选择">
+                                    <el-option label="一般" value="一般"></el-option>
+                                    <el-option label="较严重" value="较严重"></el-option>
+                                    <el-option label="较严重" value="较严重"></el-option>
+                                    <el-option label="严重" value="严重"></el-option>
                                 </el-select>
                             </el-form-item>
                         </div>
@@ -137,17 +138,17 @@
         </el-dialog>
 
 
-        <el-dialog title="新增预约" :visible.sync="dialog_add_showing" width="900px">
+        <el-dialog title="违章信息添加" :visible.sync="dialog_add_showing" width="700px">
             <el-form ref="form" :model="form" label-width="80px">
                 <div style="display:flex;justify-content: space-between;">
-                    <el-form-item label="访客姓名">
-                        <el-input v-model="form.vName" placeholder="请输入访客姓名"></el-input>
+                    <el-form-item label="车主姓名">
+                        <el-input v-model="form.vName" placeholder="请输入车主姓名"></el-input>
                     </el-form-item>
-                    <el-form-item label="来访目的">
-                        <el-input v-model="form.target" placeholder="请输入来访目的"></el-input>
-                    </el-form-item>
-                    <el-form-item label="所在单位">
-                        <el-input v-model="form.company" placeholder="请输入所在单位"></el-input>
+                    <!--                    <el-form-item label="来访目的">-->
+                    <!--                        <el-input v-model="form.target" placeholder="请输入来访目的"></el-input>-->
+                    <!--                    </el-form-item>-->
+                    <el-form-item label="单位">
+                        <el-input v-model="form.depart" placeholder="请输单位"></el-input>
                     </el-form-item>
                 </div>
                 <div style="display:flex;justify-content: space-between;">
@@ -157,15 +158,31 @@
                     <el-form-item label="身份证号">
                         <el-input v-model="form.idCard" placeholder="请输入身份证号"></el-input>
                     </el-form-item>
-                    <el-form-item label="人数">
-                        <el-input v-model="form.pepleN" placeholder="请输入人数"></el-input>
+                    <!--                    <el-form-item label="人数">-->
+                    <!--                        <el-input v-model="form.pepleN" placeholder="请输入人数"></el-input>-->
+                    <!--                    </el-form-item>-->
+                </div>
+                <div style="display:flex;">
+                    <el-form-item label="违章事件">
+                        <el-input
+                                type="textarea"
+                                :rows="2"
+                                placeholder="请输入内容"
+                                v-model="form.event">
+                        </el-input>
                     </el-form-item>
                 </div>
                 <div style="display:flex; justify-content: space-between;">
-                    <el-form-item label="访客性别">
+                    <el-form-item label="性别">
                         <el-select v-model="form.vSex" placeholder="请选择">
                             <el-option label="男" value="男"></el-option>
                             <el-option label="女" value="女"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="黑名单">
+                        <el-select v-model="form.isToBlake" placeholder="请选择">
+                            <el-option label="是" value="是"></el-option>
+                            <el-option label="否" value="否"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="属性">
@@ -173,25 +190,15 @@
                             <el-option :label="item.label" :value="item.value" v-for="item in form.propertys"></el-option>
                         </el-select>
                     </el-form-item>
-
-                    <el-form-item label="类别">
-                        <el-select v-model="form.times" placeholder="请选择">
+                </div>
+                <div>
+                    <el-form-item label="违章等级">
+                        <el-select v-model="form.grade" placeholder="请选择">
                             <el-option :label="item.label" :value="item.value" v-for="item in form.timess"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>
-                <div style="display:flex;">
-                    <el-form-item label="预约时间">
-                        <el-date-picker
-                                value-format="yyyy-MM-dd HH:mm"
-                                v-model="form.vTime"
-                                type="datetime"
-                                placeholder="选择日期时间"
-                                align="right"
-                                :picker-options="form.pickerOptions">
-                        </el-date-picker>
-                    </el-form-item>
-                </div>
+
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialog_add_showing = false">取 消</el-button>
@@ -236,6 +243,7 @@
                 rowNum: 0,
 
                 form: {
+                    isToBlake:1,
                     state: '未审核',
                     vName: '',
                     vSex: '',
@@ -246,9 +254,7 @@
                     vTime: '',
                     target: '',
                     property: '',
-                    times: '',
-                    date1:'',
-                    date2:'',
+                    grade: '',
                     pickerOptions:{
                         shortcuts: [{
                             text: '今天',
@@ -273,34 +279,30 @@
                     },
                     propertys: [
                         {
-                            value: '入司',
-                            label: '入司'
+                            value: '公司车辆',
+                            label: '公司车辆'
                         },
                         {
-                            value: '入厂',
-                            label: '入厂'
+                            value: '外来车辆',
+                            label: '外来车辆'
                         },
-                        {
-                            value: '施工',
-                            label: '施工'
-                        },
-                        {
-                            value: '协力',
-                            label: '协力'
-                        }
                     ],
                     timess: [
                         {
-                            value: '临时',
-                            label: '临时'
+                            value: '一般',
+                            label: '一般'
                         },
                         {
-                            value: '短期',
-                            label: '短期'
+                            value: '轻微',
+                            label: '轻微'
                         },
                         {
-                            value: '常驻',
-                            label: '常驻'
+                            value: '较严重',
+                            label: '较严重'
+                        },
+                        {
+                            value: '严重',
+                            label: '严重'
                         },
                     ],
 
@@ -314,12 +316,15 @@
         methods: {
             ReLoad() {
                 this.loading = true;
-                this.axios.post('/vistor/getTable').then((res) => {
+                this.axios.post('/weizcl/getTable').then((res) => {
                     this.rows = res.data;
                     // this.riws = res.data;
                     console.log(res.data);
                     this.loading = false;
                 });
+            },
+            deleteR(){
+                console.log(val.num);
             },
             handleSizeChange(val) {
                 this.pagesize = val;
@@ -328,17 +333,7 @@
                 this.currentPage = val;
             },
             searchName() {
-                let oResult = this.rows.filter(item => {
-                    if(item.vName === val){
-                        return item
-                    }
-                });
-
-                if(val === ''){
-                    this.ReLoad();
-                }else {
-                    this.rows = oResult;
-                }
+                this.$message({message: '此功能尚在开发中', type: 'warning'});
             },
             showDetail(val) {
                 this.customer = JSON.parse(JSON.stringify(val));
@@ -356,42 +351,62 @@
                 this.dialog_detail_showing = false;
             },
             proChenge(val){
-                let pArr = [
-                    {
-                        value: '临时',
-                        label: '临时'
-                    },
-                    {
-                        value: '短期',
-                        label: '短期'
-                    },
-                    {
-                        value: '常驻',
-                        label: '常驻'
-                    },
-                ];
-                let pErr = [
-                    {
-                        value: '临时',
-                        label: '临时'
-                    },
-                    {
-                        value: '短期',
-                        label: '短期'
-                    },
-                ]
-                if(val === '协力'){
-                    this.form.timess = pArr;
-                }else {
-                    this.form.timess = pErr;
-                }
+                // let pArr = [
+                //     {
+                //         value: '临时',
+                //         label: '临时'
+                //     },
+                //     {
+                //         value: '短期',
+                //         label: '短期'
+                //     },
+                //     {
+                //         value: '常驻',
+                //         label: '常驻'
+                //     },
+                // ];
+                // let pErr = [
+                //     {
+                //         value: '临时',
+                //         label: '临时'
+                //     },
+                //     {
+                //         value: '短期',
+                //         label: '短期'
+                //     },
+                // ]
+                // if(val === '协力'){
+                //     this.form.timess = pArr;
+                // }else {
+                //     this.form.timess = pErr;
+                // }
             },
             saveAdd(){
-                console.log(this.form.vTime)
-                this.form.num = this.rows.length + 1
-                this.rows.unshift(JSON.parse(JSON.stringify(this.form)));
-                this.dialog_add_showing =false;
-            }
+                // debugger
+                let sum = this.rows.filter(item => {
+                    if(item.idCard === this.form.idCard){
+                        return item
+                    }
+                })
+                console.log(sum);
+                if(sum.length <= 0){
+                    console.log(this.form.vTime);
+                    this.form.num = this.rows.length + 1;
+                    this.rows.unshift(JSON.parse(JSON.stringify(this.form)));
+                    this.dialog_add_showing =false;
+                    this.form.rongNu = 1
+                }else {
+                    let num = sum[0].num;
+                    console.log(sum[0].num);
+                    this.addCount(num)
+                }
+
+            },
+            addCount(num){
+                // debugger;
+                console.log(this.rows[this.rows.length - num]);
+                this.rows[this.rows.length - num].rongNu++;
+            },
         },
         computed: {},
         components: {Detail, AddForm}

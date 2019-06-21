@@ -28,7 +28,7 @@ let random = Mock.Random;
             // 编号
             num: i + 1,
             // 身份证号
-            idCard: '452228199999999999',
+            idCard: setIdcard(),
             // 手机号
             mobile: '17687576301',
             // 状态
@@ -46,6 +46,14 @@ let random = Mock.Random;
     }
 
 
+    function setIdcard() {
+        let cardN = ''
+        for(let i = 0;i <18;i ++){
+            let ran = Math.round(Math.random() * 9)
+            cardN += ran
+        }
+        return cardN
+    }
     function setState() {
         let sArr = ['未审批','通过审批','不通过审批'];
         let num = Math.round(Math.random() * (sArr.length - 1));
@@ -704,6 +712,7 @@ let random = Mock.Random;
         let prot = setPro();
         let part = setDepart(prot);
         let black = setGrade();
+        let rongNum = setNum()
         let obj = {
             // 访客姓名
             vName: random.cname(),
@@ -724,7 +733,7 @@ let random = Mock.Random;
             // 编号
             num: i + 1,
             // 身份证号
-            idCard: '452228199999999999',
+            idCard: setidCard(),
             // 手机号
             mobile: '17687576301',
             // 状态
@@ -740,11 +749,24 @@ let random = Mock.Random;
             // 违章等级
             grade: black,
             event: setEvent(prot),
-            isToBlake: setToB(black)
+            isToBlake: setToB(black),
+            rongNu: rongNum
         };
         arr.push(obj)
     }
 
+    function setidCard() {
+        let cNum = '';
+        for(let i = 0;i < 18;i ++){
+            let ran = Math.round(Math.random() * 9);
+            cNum += ran;
+        }
+        return cNum;
+    }
+
+    function setNum() {
+        return Math.round(Math.random() *10)
+    }
     function setToB(val) {
         debugger;
         if (val === '严重'|| val ==='较严重') {
@@ -909,6 +931,7 @@ let random = Mock.Random;
         let prot = setPro();
         let part = setDepart(prot);
         let black = setGrade();
+        let rongNum = setNum();
         let obj = {
             // 访客姓名
             vName: random.cname(),
@@ -930,7 +953,7 @@ let random = Mock.Random;
             // 编号
             num: i + 1,
             // 身份证号
-            idCard: '452228199999999999',
+            idCard: setidCard(),
             // 手机号
             mobile: '17687576301',
             // 状态
@@ -946,11 +969,25 @@ let random = Mock.Random;
             // 违章等级
             grade: black,
             event: setEvent(prot),
-            isToBlake: setToB(black)
+            isToBlake: setToB(black),
+            rongNu: rongNum
         };
         arr.push(obj)
     }
 
+    function setidCard() {
+        let cNum = '';
+        for(let i = 0;i < 18;i ++){
+            let ran = Math.round(Math.random() * 9);
+            cNum += ran;
+        }
+        return cNum;
+    }
+
+    function setNum() {
+        let num = Math.round(Math.random() * 10);
+        return num
+    }
     function setCName(){
         let sum = '';
         for (let i = 0; i < 4; i++) {
@@ -1053,7 +1090,7 @@ let random = Mock.Random;
         }
     }
     function setPro(){
-        let pArr = ['公司员工','外来访客'];
+        let pArr = ['公司车辆','外来车辆'];
         let num = Math.round(Math.random() * (pArr.length - 1))
         return pArr[num]
     }
@@ -1114,7 +1151,49 @@ let random = Mock.Random;
     }
 
 
-    Mock.mock('/weiz/getTable', 'post', arr.reverse());
+    Mock.mock('/weizcl/getTable', 'post', arr.reverse());
+
+    Mock.mock('/shebgl/tables', 'post', [{
+        num: 1,
+        vName: '访客管理系统',
+        type: 'C3&SQLFKV4.0',
+        agu: '可实现访客的综合管理',
+        meber: 1,
+        depart: '套',
+        mobile: '17687576301',
+        grade: '正常',
+    },
+        {
+            num: 2,
+            vName: '发卡器',
+            type: 'DAC FK4160',
+            agu: 'USB 接口',
+            meber: 2,
+            depart: '台',
+            mobile: '17687576301',
+            grade: '正常',
+        },
+        {
+            num: 3,
+            vName: '票据打印机',
+            type: '5890T',
+            agu: '打印访客凭条',
+            meber: 2,
+            depart: '台',
+            mobile: '17687576301',
+            grade: '异常',
+        },
+        {
+            num: 4,
+            vName: '二代身份证阅读器',
+            type: 'DAC CR880',
+            agu: 'USB 接 口 、 有 效 采 集 面 积16mm*14mm',
+            meber: 2,
+            depart: '台',
+            mobile: '17687576301',
+            grade: '正常',
+        }
+    ]);
 })();
 /*
 // System

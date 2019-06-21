@@ -44,10 +44,10 @@
 		</div>
 
 
-		<div style="height: 100%; box-sizing: border-box; padding-top: 58px;" v-show="this.$store.state.logined">
+		<div style="height: 100%; box-sizing: border-box; padding-top: 58px;">
 			<el-container style="height: 100%;">
 				<!-- 左边菜单 -->
-				<el-aside width="auto" style="padding-top: 1em; ">
+				<el-aside width="auto" style="padding-top: 1em; " v-show="this.$store.state.logined">
 					<el-menu background-color="#545c64"  class="el-menu-vertical-demo" :default-active="$route.path" text-color="#fff" active-text-color="#ffd04b" :collapse="isCollapse" :router="true">
 						<template v-for="(item, index) in $store.state.sys.menu">
 							<el-menu-item :index="item.url"><i :class="item.icon"></i><span>{{item.title}}</span></el-menu-item>
@@ -62,8 +62,6 @@
 			</el-container>
 		</div>
 
-		<LoginView :sys="sys_config" v-show="this.$store.state.logined==false"></LoginView>
-
 
 	</div>
 </template>
@@ -72,7 +70,6 @@
 
 <script>
 	import sys_config from '@/config/sys.config.js'
-	import LoginView from '@/views/Login.vue'
 
 
 	export default {
@@ -106,6 +103,7 @@
 			},
 			Logout(){
 				this.$store.state.logined=false;
+				this.$router.push('/login');
 			},
 			ClickPage(item, mod){
 				this.LoadedData = false;
@@ -115,7 +113,7 @@
 			},
 		},
 		computed: {},
-		components: { LoginView }
+		components: {  }
 	}
 </script>
 

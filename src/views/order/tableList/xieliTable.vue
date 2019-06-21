@@ -11,7 +11,7 @@
 
             <!-- 搜索框 -->
             <el-col :span="4">
-                <el-input placeholder="" class="input-with-select" prefix-icon="el-icon-search" auto-complete="true" @change="" style="max-width: 280px; float: right;" :clearable="true"></el-input>
+                <el-input placeholder="" class="input-with-select" prefix-icon="el-icon-search" v-model="sousuo" auto-complete="true" @change="searchName(sousuo)" style="max-width: 280px; float: right;" :clearable="true"></el-input>
             </el-col>
         </el-row>
 
@@ -92,6 +92,7 @@
                 item:{},
                 currentPage: 1,
                 pagesize: 10,
+                sousuo: ''
 
 
                 // list_input:{
@@ -132,6 +133,19 @@
                 this.row.splice(start,1)
                 this.rows = this.row
             },
+            searchName(val){
+                let oResult = this.rows.filter(item => {
+                    if(item.emName === val){
+                        return item
+                    }
+                });
+
+                if(val === ''){
+                    this.ReLoad();
+                }else {
+                    this.rows = oResult;
+                }
+            }
         },
         computed: { },
         components: { Detail,FormNew },

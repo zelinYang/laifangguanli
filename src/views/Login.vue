@@ -50,6 +50,7 @@
 			};
 		},
 		mounted: function() {
+			this.$store.state.logined = false;
 			//ShowLoading();
 		},
 		methods: {
@@ -64,6 +65,7 @@
 
 			onSubmit() {
 				this.$store.state.logined = true;
+				this.$router.push('/index')
 				//debugger;
 				// this.loading = true;
 				// this.sys.title = res2.data.data.title;

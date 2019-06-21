@@ -7,10 +7,6 @@
 			</el-breadcrumb>
 		</div>
 
-	    <div style="text-align: right; margin: 20px 0;">
-	      <el-button icon="el-icon-setting" @click="dialog_setup_showing=true">设置</el-button>
-	    </div>
-
 
 		<el-tabs type="border-card">
 			<el-tab-pane label="公司人员/常驻">

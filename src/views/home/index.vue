@@ -14,13 +14,13 @@
             </template>
         </div>
 
-        <div style="text-align: center;">
-            <template v-for="item in info.bars">
-                <chart ref="chart" :options="bar(item)" :auto-resize="false"
-                       style="width:1200px; margin: 10px auto;"></chart>
-                <div class="title">{{item.name}}</div>
-            </template>
-        </div>
+<!--        <div style="text-align: center;">-->
+<!--            <template v-for="item in info.bars">-->
+<!--                <chart ref="chart" :options="bar(item)" :auto-resize="false"-->
+<!--                       style="width:1200px; margin: 10px auto;"></chart>-->
+<!--                <div class="title">{{item.name}}</div>-->
+<!--            </template>-->
+<!--        </div>-->
 
 
     </div>

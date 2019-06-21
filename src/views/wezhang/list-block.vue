@@ -44,7 +44,7 @@
             <el-table-column prop="depart" label="单位" width="100"></el-table-column>
             <el-table-column prop="mobile" label="手机" width="180"></el-table-column>
             <el-table-column prop="idCard" label="身份证" width="200"></el-table-column>
-            <el-table-column prop="isToBlake" label="是否列入黑名单" width="100"></el-table-column>
+            <el-table-column prop="rongNu" label="违章次数" width="100"></el-table-column>
 <!--            <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>-->
 <!--            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>-->
             <el-table-column prop="grade" label="违章等级" width="100">
@@ -107,8 +107,8 @@
                         </div>
                         <div style="display: flex;">
                             <el-form-item label="违章事件">
-                                <el-input v-model="customer.event" style="width: 400px;"></el-input>
-                            </el-form-item>
+                            <el-input v-model="customer.event" style="width: 400px;"></el-input>
+                        </el-form-item>
 <!--                            <el-form-item label="类别">-->
 <!--                                <el-input v-model="customer.times"></el-input>-->
 <!--                            </el-form-item>-->
@@ -116,10 +116,8 @@
 <!--                                <el-input v-model="customer.creatTime"></el-input>-->
 <!--                            </el-form-item>-->
 
-                            <el-form-item label="黑名单">
-                                <el-switch
-                                        v-model="customer.isToBlake=='是'? true:false">
-                                </el-switch>
+                            <el-form-item label="违章次数">
+                                <el-input v-model="customer.rongNu"></el-input>
                             </el-form-item>
                         </div>
                         <div style="display: flex;justify-content: space-between">
@@ -183,12 +181,6 @@
                             <el-option label="女" value="女"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="黑名单">
-                        <el-select v-model="form.isToBlake" placeholder="请选择">
-                            <el-option label="是" value="是"></el-option>
-                            <el-option label="否" value="否"></el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-form-item label="属性">
                         <el-select v-model="form.property" @change="proChenge" placeholder="请选择">
                             <el-option :label="item.label" :value="item.value" v-for="item in form.propertys"></el-option>
@@ -247,6 +239,7 @@
                 rowNum: 0,
 
                 form: {
+                    rongNu: 1,
                     isToBlake:'',
                     state: '未审核',
                     vName: '',
@@ -340,13 +333,13 @@
                 this.$message({message: '此功能尚在开发中', type: 'warning'});
             },
             showDetail(val) {
-                this.customer = JSON.parse(JSON.stringify(val));
-                this.rowNum = parseInt(this.customer.num) -1;
+                this.customer = val;
+                this.rowNum = this.customer.num - 1;
                 this.dialog_detail_showing = true;
                 console.log(this.customer);
             },
             passA(){
-                this.rows.splice(this.rowNum,1,this.customer)
+                this.rows.splice(this.rowNum,1,this.customer);
                 console.log(this.rows[this.rowNum]);
                 this.dialog_detail_showing = false;
             },
@@ -355,8 +348,8 @@
                 this.dialog_detail_showing = false;
             },
             proChenge(val){
-                let pArr = [
-                    {
+                /*let pArr = [
+                    /!*{
                         value: '临时',
                         label: '临时'
                     },
@@ -383,13 +376,44 @@
                     this.form.timess = pArr;
                 }else {
                     this.form.timess = pErr;
-                }
+                }*!/*/
             },
             saveAdd(){
-                console.log(this.form.vTime)
-                this.form.num = this.rows.length + 1
-                this.rows.unshift(JSON.parse(JSON.stringify(this.form)));
-                this.dialog_add_showing =false;
+                // debugger
+                let sum = this.rows.filter(item => {
+                    if(item.idCard === this.form.idCard){
+                        return item
+                    }
+                })
+                console.log(sum);
+                if(sum.length <= 0){
+                    console.log(this.form.vTime);
+                    this.form.num = this.rows.length + 1;
+                    this.rows.unshift(JSON.parse(JSON.stringify(this.form)));
+                    this.dialog_add_showing =false;
+                    this.form.rongNu = 1
+                }else {
+                    let num = sum[0].num;
+                    console.log(sum[0].num);
+                    this.addCount(num)
+                }
+
+            },
+            addCount(num){
+                // debugger;
+                console.log(this.rows[this.rows.length - num]);
+                this.rows[this.rows.length - num].rongNu++;
+            },
+
+            blackChange(val){
+                console.log(val)
+
+                if(val === true){
+                    this.customer.isToBlake = '是'
+                }else {
+                    this.customer.isToBlake = '否'
+                }
+
             }
         },
         computed: {},

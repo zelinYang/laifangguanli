@@ -1,8 +1,11 @@
 <template>
 	<div>
-		
-		<p style="text-align: center;margin: 10em 0; font-size: 14px;text-align: center;">暂无可分析数据</p>
-		
+		<div>
+			<el-breadcrumb separator-class="el-icon-arrow-right">
+				<el-breadcrumb-item>报表管理</el-breadcrumb-item>
+				<el-breadcrumb-item>所有报表</el-breadcrumb-item>
+			</el-breadcrumb>
+		</div>
 	</div>
 </template>
 
@@ -20,16 +23,16 @@
 			ReLoad();
 		},
 		methods: {
-			
+
 
 			ReLoad: function(){
 				this.loading = true;
-				this.axios.post("/shop/admin_api/get_base_data").then((res) => {
+				this.axios.post("").then((res) => {
 				    this.info = res.data.data.title;
 				    this.loading = false;
 				});
 			},
-		    
+
 
 		}
 

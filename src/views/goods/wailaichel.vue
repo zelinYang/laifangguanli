@@ -128,7 +128,16 @@
                 this.currentPage = val;
             },
             searchName() {
-                this.$message({message: '此功能尚在开发中', type: 'warning'});
+                let oResult = this.rows.filter(item => {
+                    if(item.cName === val){
+                        return item
+                    }
+                });
+                if(val === ''){
+                    this.ReLoad();
+                }else {
+                    this.rows = oResult;
+                }
             },
             deleteR(val){
                 console.log(val.num);
