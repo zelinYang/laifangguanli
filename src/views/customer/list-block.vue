@@ -47,22 +47,22 @@
             <el-table-column prop="mobile" label="手机" width="150"></el-table-column>
             <el-table-column prop="idCard" label="身份证" width="200"></el-table-column>
             <el-table-column prop="vTime" label="预约时间" width="180"></el-table-column>
-<!--            <el-table-column prop="target" label="来访目的" width="180"></el-table-column>-->
-<!--            <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>-->
-<!--            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>-->
-<!--            <el-table-column prop="state" label="状态" width="100">-->
-<!--                <template slot-scope="scope">-->
-<!--                    <el-tag type="info" v-if="scope.row.state == '未审批'">未审批</el-tag>-->
-<!--                    <el-tag type="success" v-if="scope.row.state == '通过'">通过</el-tag>-->
-<!--                    <el-tag type="warning" v-if="scope.row.state == '不通过'">不通过</el-tag>-->
-<!--                </template>-->
-<!--            </el-table-column>-->
+            <el-table-column prop="target" label="来访目的" width="180"></el-table-column>
+            <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>
+            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>
+            <el-table-column prop="state" label="状态" width="100">
+                <template slot-scope="scope">
+                    <el-tag type="info" v-if="scope.row.state == '未审批'">未审批</el-tag>
+                    <el-tag type="success" v-if="scope.row.state == '通过'">通过</el-tag>
+                    <el-tag type="warning" v-if="scope.row.state == '不通过'">不通过</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" width="100">
-<!--                <template slot-scope="scope">-->
-<!--                    <el-button size="mini" @click="showDetail(scope.row)"-->
-<!--                               style="">详情-->
-<!--                    </el-button>-->
-<!--                </template>-->
+                <template slot-scope="scope">
+                    <el-button size="mini" @click="showDetail(scope.row)"
+                               style="">详情
+                    </el-button>
+                </template>
             </el-table-column>
         </el-table>
 
