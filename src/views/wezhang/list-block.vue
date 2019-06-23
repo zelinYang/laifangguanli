@@ -87,11 +87,14 @@
                             <el-form-item label="姓名">
                                 <el-input v-model="customer.vName"></el-input>
                             </el-form-item>
-                            <el-form-item label="访客性别">
-                                <el-input v-model="customer.vSex"></el-input>
-                            </el-form-item>
                             <el-form-item label="单位">
                                 <el-input v-model="customer.depart"></el-input>
+                            </el-form-item>
+                            <el-form-item label="性别">
+                                <el-select v-model="customer.vSex" placeholder="请选择">
+                                    <el-option label="男" value="男"></el-option>
+                                    <el-option label="女" value="女"></el-option>
+                                </el-select>
                             </el-form-item>
                         </div>
                         <div style="display: flex;justify-content: space-between">
@@ -102,12 +105,15 @@
                                 <el-input v-model="customer.idCard"></el-input>
                             </el-form-item>
                             <el-form-item label="属性">
-                                <el-input v-model="customer.property"></el-input>
+                                <el-select v-model="customer.property" >
+                                    <el-option label="公司员工" value="公司员工"></el-option>
+                                    <el-option label="外来访客" value="外来访客"></el-option>
+                                </el-select>
                             </el-form-item>
                         </div>
-                        <div style="display: flex;">
+                        <div style="display: flex;justify-content: space-between">
                             <el-form-item label="违章事件">
-                            <el-input v-model="customer.event" style="width: 400px;"></el-input>
+                            <el-input v-model="customer.event" ></el-input>
                         </el-form-item>
 <!--                            <el-form-item label="类别">-->
 <!--                                <el-input v-model="customer.times"></el-input>-->
@@ -119,8 +125,6 @@
                             <el-form-item label="违章次数">
                                 <el-input v-model="customer.rongNu"></el-input>
                             </el-form-item>
-                        </div>
-                        <div style="display: flex;justify-content: space-between">
                             <el-form-item label="违章等级">
                                 <el-select v-model="customer.grade" placeholder="请选择">
                                     <el-option label="一般" value="一般"></el-option>
@@ -129,6 +133,9 @@
                                     <el-option label="严重" value="严重"></el-option>
                                 </el-select>
                             </el-form-item>
+                        </div>
+                        <div style="display: flex;justify-content: space-between">
+
                         </div>
                     </el-form>
                 </el-tab-pane>
@@ -343,14 +350,13 @@
                 }
             },
             showDetail(val) {
-                this.customer = val;
-                this.rowNumq = this.customer.num - 1;
+                this.customer = JSON.parse(JSON.stringify(val));
+                this.rowNumq = this.customer.num;
                 this.dialog_detail_showing = true;
                 console.log(this.customer);
             },
             passA(){
-                this.rows.splice(this.rowNumq,1,this.customer);
-                console.log(this.rows[this.rowNumq]);
+                this.rows.splice(this.rows.length - this.rowNumq,1,this.customer);
                 this.dialog_detail_showing = false;
             },
             desPass(){
@@ -400,14 +406,13 @@
                     console.log(this.form.vTime);
                     this.form.num = this.rows.length + 1;
                     this.rows.unshift(JSON.parse(JSON.stringify(this.form)));
-                    this.dialog_add_showing =false;
                     this.form.rongNu = 1
                 }else {
                     let num = sum[0].num;
                     console.log(sum[0].num);
                     this.addCount(num)
                 }
-
+                this.dialog_add_showing =false;
             },
             addCount(num){
                 // debugger;

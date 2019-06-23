@@ -11,7 +11,7 @@
 
             <!-- 搜索框 -->
             <el-col :span="4">
-                <el-input placeholder="" class="input-with-select" prefix-icon="el-icon-search" v-model="sousuo" auto-complete="true" @change="searchName(sousuo)" style="max-width: 280px; float: right;" :clearable="true"></el-input>
+                <el-input placeholder="请输入要搜索的姓名" class="input-with-select" prefix-icon="el-icon-search" v-model="sousuo" auto-complete="true" @change="searchName(sousuo)" style="max-width: 280px; float: right;" :clearable="true"></el-input>
             </el-col>
         </el-row>
 

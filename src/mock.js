@@ -55,7 +55,7 @@ let random = Mock.Random;
         return cardN
     }
     function setState() {
-        let sArr = ['未审批','通过审批','不通过审批'];
+        let sArr = ['未审批','通过','不通过'];
         let num = Math.round(Math.random() * (sArr.length - 1));
         return sArr[num];
     }

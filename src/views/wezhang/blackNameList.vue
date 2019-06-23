@@ -19,7 +19,7 @@
 
             <!-- 搜索框 -->
             <el-col :span="4">
-                <el-input placeholder="请输入要查找人的车主姓名" class="input-with-select" prefix-icon="el-icon-search"
+                <el-input placeholder="请输入要查找的车牌号" class="input-with-select" prefix-icon="el-icon-search"
                           @change="searchName(sousuo)" v-model="sousuo" style="max-width: 280px; float: right;"
                           :clearable="true"></el-input>
             </el-col>
@@ -88,21 +88,29 @@
                                 <el-input v-model="customer.vName"></el-input>
                             </el-form-item>
                             <el-form-item label="性别">
-                                <el-input v-model="customer.vSex"></el-input>
+                                <el-select v-model="customer.vSex">
+                                    <el-option value="男" label="男"></el-option>
+                                    <el-option value="女" label="女"></el-option>
+                                </el-select>
                             </el-form-item>
-                            <el-form-item label="单位">
-                                <el-input v-model="customer.depart"></el-input>
+                            <el-form-item label="车牌号">
+                                <el-input v-model="customer.cName">
+
+                                </el-input>
                             </el-form-item>
                         </div>
                         <div style="display: flex;justify-content: space-between">
                             <el-form-item label="手机号码">
                                 <el-input v-model="customer.mobile"></el-input>
                             </el-form-item>
-                            <el-form-item label="身份证号">
-                                <el-input v-model="customer.idCard"></el-input>
-                            </el-form-item>
                             <el-form-item label="属性">
-                                <el-input v-model="customer.property"></el-input>
+                                <el-select v-model="customer.property">
+                                    <el-option label="公司车辆" value="公司车辆"></el-option>
+                                    <el-option label="外来车辆" value="外来车辆"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="违章次数">
+                                <el-input v-model="customer.rongNu"></el-input>
                             </el-form-item>
                         </div>
                         <div style="display: flex;">
@@ -115,10 +123,6 @@
                             <!--                            <el-form-item label="填表日期">-->
                             <!--                                <el-input v-model="customer.creatTime"></el-input>-->
                             <!--                            </el-form-item>-->
-
-                            <el-form-item label="违章次数">
-                                <el-input v-model="customer.rongNu"></el-input>
-                            </el-form-item>
                         </div>
                         <div style="display: flex;justify-content: space-between">
                             <el-form-item label="违章等级">
@@ -149,16 +153,13 @@
                     <!--                    <el-form-item label="来访目的">-->
                     <!--                        <el-input v-model="form.target" placeholder="请输入来访目的"></el-input>-->
                     <!--                    </el-form-item>-->
-                    <el-form-item label="单位">
-                        <el-input v-model="form.depart" placeholder="请输单位"></el-input>
+                    <el-form-item label="车牌号">
+                        <el-input v-model="form.cName" placeholder="请输入车牌号"></el-input>
                     </el-form-item>
                 </div>
                 <div style="display:flex;justify-content: space-between;">
                     <el-form-item label="手机号码">
                         <el-input v-model="form.mobile" placeholder="请输入手机号码"></el-input>
-                    </el-form-item>
-                    <el-form-item label="身份证号">
-                        <el-input v-model="form.idCard" placeholder="请输入身份证号"></el-input>
                     </el-form-item>
                     <!--                    <el-form-item label="人数">-->
                     <!--                        <el-input v-model="form.pepleN" placeholder="请输入人数"></el-input>-->
@@ -237,6 +238,7 @@
                 pagesize: 10,
 
                 rowNum: [],
+                rowNumq: [],
 
                 form: {
                     isToBlake:1,
@@ -330,18 +332,27 @@
             handleCurrentChange(val) {
                 this.currentPage = val;
             },
-            searchName() {
-                this.$message({message: '此功能尚在开发中', type: 'warning'});
+            searchName(val) {
+                let oResult = this.rows.filter(item => {
+                    if(item.cName === val){
+                        return item
+                    }
+                });
+
+                if(val === ''){
+                    this.ReLoad();
+                }else {
+                    this.rows = oResult;
+                }
             },
             showDetail(val) {
                 this.customer = JSON.parse(JSON.stringify(val));
-                this.rowNum = parseInt(this.customer.num) -1;
+                this.rowNumq = parseInt(this.customer.num) -1;
                 this.dialog_detail_showing = true;
                 console.log(this.customer);
             },
             passA(){
-                this.rows.splice(this.rowNum,1,this.customer)
-                console.log(this.rows[this.rowNum]);
+                this.rows.splice(this.rows.length - this.rowNumq,1,this.customer)
                 this.dialog_detail_showing = false;
             },
             desPass(){
@@ -391,14 +402,13 @@
                     console.log(this.form.vTime);
                     this.form.num = this.rows.length + 1;
                     this.rows.unshift(JSON.parse(JSON.stringify(this.form)));
-                    this.dialog_add_showing =false;
                     this.form.rongNu = 1
                 }else {
                     let num = sum[0].num;
                     console.log(sum[0].num);
                     this.addCount(num)
                 }
-
+                this.dialog_add_showing = false;
             },
             addCount(num){
                 // debugger;

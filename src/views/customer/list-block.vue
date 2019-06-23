@@ -40,29 +40,29 @@
             <el-table-column prop="vName" label="姓名" width=""></el-table-column>
             <el-table-column prop="vSex" label="性别" width="100"></el-table-column>
             <el-table-column prop="property" label="属性" width="100"></el-table-column>
-            <el-table-column prop="times" label="类别" width="200"></el-table-column>
+            <el-table-column prop="times" label="类别" width="100"></el-table-column>
 
             <el-table-column prop="pepleN" label="人数" width="100"></el-table-column>
             <el-table-column prop="company" label="所在单位" width="100"></el-table-column>
-            <el-table-column prop="mobile" label="手机" width="200"></el-table-column>
-            <el-table-column prop="idCard" label="身份证" width="300"></el-table-column>
-            <el-table-column prop="vTime" label="预约时间" width="200"></el-table-column>
-            <el-table-column prop="target" label="来访目的" width="180"></el-table-column>
+            <el-table-column prop="mobile" label="手机" width="150"></el-table-column>
+            <el-table-column prop="idCard" label="身份证" width="200"></el-table-column>
+            <el-table-column prop="vTime" label="预约时间" width="180"></el-table-column>
+<!--            <el-table-column prop="target" label="来访目的" width="180"></el-table-column>-->
 <!--            <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>-->
 <!--            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>-->
-            <el-table-column prop="state" label="状态" width="100">
-                <template slot-scope="scope">
-                    <el-tag type="info" v-if="scope.row.state == '未审批'">未审批</el-tag>
-                    <el-tag type="success" v-if="scope.row.state == '通过审批'">通过</el-tag>
-                    <el-tag type="warning" v-if="scope.row.state == '不通过审批'">不通过</el-tag>
-                </template>
-            </el-table-column>
+<!--            <el-table-column prop="state" label="状态" width="100">-->
+<!--                <template slot-scope="scope">-->
+<!--                    <el-tag type="info" v-if="scope.row.state == '未审批'">未审批</el-tag>-->
+<!--                    <el-tag type="success" v-if="scope.row.state == '通过'">通过</el-tag>-->
+<!--                    <el-tag type="warning" v-if="scope.row.state == '不通过'">不通过</el-tag>-->
+<!--                </template>-->
+<!--            </el-table-column>-->
             <el-table-column label="操作" width="100">
-                <template slot-scope="scope">
-                    <el-button size="mini" @click="showDetail(scope.row)"
-                               style="margin-right: 10px;">详情
-                    </el-button>
-                </template>
+<!--                <template slot-scope="scope">-->
+<!--                    <el-button size="mini" @click="showDetail(scope.row)"-->
+<!--                               style="">详情-->
+<!--                    </el-button>-->
+<!--                </template>-->
             </el-table-column>
         </el-table>
 
@@ -116,17 +116,12 @@
                                     <el-option label="施工" value="施工"></el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="填表日期">
+                            <el-form-item label="类型">
                                 <el-select v-model="customer.times" placeholder="请选择">
                                     <el-option label="临时" value="临时"></el-option>
                                     <el-option label="短期" value="长期"></el-option>
                                     <el-option label="常驻（协力）" value="常驻（协力）"></el-option>
                                 </el-select>
-                            </el-form-item>
-                        </div>
-                        <div style="display: flex;justify-content: space-between">
-                            <el-form-item label="填表日期">
-                                <el-input v-model="customer.creatTime"></el-input>
                             </el-form-item>
                             <el-form-item label="状态">
                                 <el-select v-model="customer.state" placeholder="请选择">
@@ -135,6 +130,12 @@
                                     <el-option label="不通过" value="不通过"></el-option>
                                 </el-select>
                             </el-form-item>
+                        </div>
+                        <div style="display: flex">
+
+                        </div>
+                        <div style="display: flex;justify-content: space-between">
+
                         </div>
                     </el-form>
                 </el-tab-pane>
@@ -244,6 +245,7 @@
                 pagesize: 10,
 
                 rowNum: [],
+                rowNumq: 0,
 
                 form: {
                     state: '未审核',
@@ -363,13 +365,14 @@
             },
             showDetail(val) {
                 this.customer = JSON.parse(JSON.stringify(val));
-                this.rowNum = parseInt(this.customer.num) -1;
+                this.rowNumq = this.customer.num;
                 this.dialog_detail_showing = true;
                 console.log(this.customer);
             },
             passA(){
-                this.rows.splice(this.rowNum,1,this.customer)
-                console.log(this.rows[this.rowNum]);
+                console.log(this.rows)
+                this.rows.splice(this.rows.length - this.rowNumq,1,this.customer)
+                console.log(this.rows);
                 this.dialog_detail_showing = false;
             },
             desPass(){

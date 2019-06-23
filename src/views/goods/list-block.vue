@@ -46,8 +46,7 @@
       </el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
-          <el-button size="mini" @click="deleteR(scope.row)"
-                     style="margin-right: 10px;">删除记录
+          <el-button size="mini" @click="deleteR(scope.row)">删除记录
           </el-button>
         </template>
       </el-table-column>
