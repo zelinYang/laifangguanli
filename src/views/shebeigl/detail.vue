@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="width: 100%;">
 					<div style="text-align: center; position: absolute; width: 160px; left: 0px; padding: 10px;">
 						<img :src="info.avatar_url ? info.avatar_url : require('@/assets/user.png')" style="width: 100px;height: 100px; border-radius:50%" onerror="this.src='/static/img/user.png';">
 

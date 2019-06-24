@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 99%;">
     <!-- 按钮与筛选 -->
     <el-row :gutter="0" type="flex" justify="space-between" style="margin: 10px 0;">
       <!-- 按钮 -->
@@ -44,7 +44,7 @@
           <el-tag type=" " v-if="scope.row.state == '自备车'">自备车</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <el-button size="mini" @click="deleteR(scope.row)">删除记录
           </el-button>

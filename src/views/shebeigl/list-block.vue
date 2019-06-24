@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div style="width: 99%">
         <!-- 按钮与筛选 -->
         <el-row :gutter="0" type="flex" justify="space-between" style="margin: 10px 0;">
             <!-- 按钮 -->
             <el-col :span="20">
                 <el-button-group style="margin-right: 10px;">
-                    <el-button type="primary" class="el-icon-plus" @click="dialog_add_showing = true">设备信息添加</el-button>
+                    <el-button type="primary" @click="dialog_add_showing = true">+设备添加</el-button>
                 </el-button-group>
 
                 <el-button-group style="margin-right: 10px;">
@@ -49,7 +49,7 @@
                     <el-tag type="danger" v-if="scope.row.grade == '异常'">异常</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="180">
+            <el-table-column label="操作" width="300">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="showDetail(scope.row)"
                                style="margin-right: 10px;">详情

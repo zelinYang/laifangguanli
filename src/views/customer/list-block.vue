@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="width: 99%;">
         <!-- 按钮与筛选 -->
         <el-row :gutter="0" type="flex" justify="space-between" style="margin: 10px 0;">
             <!-- 按钮 -->
@@ -18,11 +18,11 @@
             </el-col>
 
             <!-- 搜索框 -->
-            <el-col :span="4">
-                <el-input placeholder="请输入要查找人的姓名" class="input-with-select" prefix-icon="el-icon-search"
-                          @change="searchName(sousuo)" v-model="sousuo" style="max-width: 280px; float: right;"
-                          :clearable="true"></el-input>
-            </el-col>
+<!--            <el-col :span="4">-->
+<!--                <el-input placeholder="请输入要查找人的姓名" class="input-with-select" prefix-icon="el-icon-search"-->
+<!--                          @change="searchName(sousuo)" v-model="sousuo" style="max-width: 280px; float: right;"-->
+<!--                          :clearable="true"></el-input>-->
+<!--            </el-col>-->
         </el-row>
 
 
@@ -41,7 +41,6 @@
             <el-table-column prop="vSex" label="性别" width="100"></el-table-column>
             <el-table-column prop="property" label="属性" width="100"></el-table-column>
             <el-table-column prop="times" label="类别" width="100"></el-table-column>
-
             <el-table-column prop="pepleN" label="人数" width="100"></el-table-column>
             <el-table-column prop="company" label="所在单位" width="100"></el-table-column>
             <el-table-column prop="mobile" label="手机" width="150"></el-table-column>
@@ -51,7 +50,7 @@
             <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>
             <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>
             <el-table-column prop="state" label="状态" width="100">
-                <template slot-scope="scope">
+                <template slot-scope="scope" >
                     <el-tag type="info" v-if="scope.row.state == '未审批'">未审批</el-tag>
                     <el-tag type="success" v-if="scope.row.state == '通过'">通过</el-tag>
                     <el-tag type="warning" v-if="scope.row.state == '不通过'">不通过</el-tag>

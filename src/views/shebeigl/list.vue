@@ -3,7 +3,7 @@
     <div style="margin-bottom: 20px;">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item>设备管理</el-breadcrumb-item>
-          <el-breadcrumb-item>所有设备</el-breadcrumb-item>
+          <el-breadcrumb-item>设备列表</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
 

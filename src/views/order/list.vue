@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="width: 99%">
 		<div style="margin-bottom: 20px;">
 			<el-breadcrumb separator-class="el-icon-arrow-right">
 				<el-breadcrumb-item>人员管理</el-breadcrumb-item>

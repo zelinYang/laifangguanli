@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div style="width: 99%">
         <!-- 按钮与筛选 -->
         <el-row :gutter="0" type="flex" justify="space-between" style="margin: 10px 0;">
             <!-- 按钮 -->
             <el-col :span="20">
                 <el-button-group style="margin-right: 10px;">
-                    <el-button type="primary" @click="dialog_add_showing = true">违章信息添加</el-button>
+                    <el-button type="primary" @click="dialog_add_showing = true">+ 违章添加</el-button>
                 </el-button-group>
 
 
@@ -37,13 +37,13 @@
         <el-table :data="rows.slice((currentPage-1)*pagesize,currentPage*pagesize)" @selection-change="checkedRow" v-loading="loading">
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="num" label="编号" width="100"></el-table-column>
+            <el-table-column prop="cName" label="车牌号" width=""></el-table-column>
             <el-table-column prop="vName" label="车主姓名" width="100"></el-table-column>
-            <el-table-column prop="event" label="违章事件" width=""></el-table-column>
+            <el-table-column prop="event" label="违章事件" width="200"></el-table-column>
 <!--            <el-table-column prop="vSex" label="性别" width="100"></el-table-column>-->
             <el-table-column prop="property" label="属性" width="100"></el-table-column>
 <!--            <el-table-column prop="depart" label="单位" width="100"></el-table-column>-->
             <el-table-column prop="mobile" label="手机" width="180"></el-table-column>
-            <el-table-column prop="cName" label="车牌号" width="100"></el-table-column>
             <el-table-column prop="rongNu" label="违章次数" width="100"></el-table-column>
             <!--            <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>-->
             <!--            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>-->
@@ -401,8 +401,8 @@
                 if(sum.length <= 0){
                     console.log(this.form.vTime);
                     this.form.num = this.rows.length + 1;
+                    this.form.rongNu = 1;
                     this.rows.unshift(JSON.parse(JSON.stringify(this.form)));
-                    this.form.rongNu = 1
                 }else {
                     let num = sum[0].num;
                     console.log(sum[0].num);

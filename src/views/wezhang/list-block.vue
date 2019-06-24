@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div style="width: 99%">
         <!-- 按钮与筛选 -->
         <el-row :gutter="0" type="flex" justify="space-between" style="margin: 10px 0;">
             <!-- 按钮 -->
             <el-col :span="20">
                 <el-button-group style="margin-right: 10px;">
-                    <el-button type="primary" @click="dialog_add_showing = true">违章信息添加</el-button>
+                    <el-button type="primary" @click="dialog_add_showing = true">+ 违章添加</el-button>
                 </el-button-group>
 
 
@@ -157,7 +157,7 @@
 <!--                        <el-input v-model="form.target" placeholder="请输入来访目的"></el-input>-->
 <!--                    </el-form-item>-->
                     <el-form-item label="单位">
-                        <el-input v-model="form.depart" placeholder="请输单位"></el-input>
+                        <el-input v-model="form.depart" placeholder="请输入单位"></el-input>
                     </el-form-item>
                 </div>
                 <div style="display:flex;justify-content: space-between;">
