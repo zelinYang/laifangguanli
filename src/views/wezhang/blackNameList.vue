@@ -352,7 +352,7 @@
                 console.log(this.customer);
             },
             passA(){
-                this.rows.splice(this.rows.length - this.rowNumq,1,this.customer)
+                this.rows.splice(this.rows.length - this.rowNumq -1,1,this.customer)
                 this.dialog_detail_showing = false;
             },
             desPass(){

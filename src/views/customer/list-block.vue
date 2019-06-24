@@ -41,7 +41,7 @@
             <el-table-column prop="vSex" label="性别" width="100"></el-table-column>
             <el-table-column prop="property" label="属性" width="100"></el-table-column>
             <el-table-column prop="times" label="类别" width="100"></el-table-column>
-            <el-table-column prop="pepleN" label="人数" width="100"></el-table-column>
+            <el-table-column prop="pepleN" label="人数" width="50"></el-table-column>
             <el-table-column prop="company" label="所在单位" width="100"></el-table-column>
             <el-table-column prop="mobile" label="手机" width="150"></el-table-column>
             <el-table-column prop="idCard" label="身份证" width="200"></el-table-column>
