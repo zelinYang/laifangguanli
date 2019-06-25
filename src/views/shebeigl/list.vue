@@ -2,7 +2,7 @@
   <div>
     <div style="margin-bottom: 20px;">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item>设备管理</el-breadcrumb-item>
+          <el-breadcrumb-item>配置管理</el-breadcrumb-item>
           <el-breadcrumb-item>设备列表</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
@@ -15,9 +15,6 @@
       <el-tab-pane label="设备列表">
           <CustomerListBlock></CustomerListBlock>
       </el-tab-pane>
-        <el-tab-pane label="">
-            <Black></Black>
-        </el-tab-pane>
     </el-tabs>
 
 

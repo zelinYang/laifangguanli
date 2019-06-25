@@ -18,11 +18,11 @@
             </el-col>
 
             <!-- 搜索框 -->
-<!--            <el-col :span="4">-->
-<!--                <el-input placeholder="请输入要查找人的姓名" class="input-with-select" prefix-icon="el-icon-search"-->
-<!--                          @change="searchName(sousuo)" v-model="sousuo" style="max-width: 280px; float: right;"-->
-<!--                          :clearable="true"></el-input>-->
-<!--            </el-col>-->
+            <el-col :span="4">
+                <el-input placeholder="请输入要查找人的姓名" class="input-with-select" prefix-icon="el-icon-search"
+                          @change="searchName(sousuo)" v-model="sousuo" style="max-width: 280px; float: right;"
+                          :clearable="true"></el-input>
+            </el-col>
         </el-row>
 
 
@@ -52,7 +52,7 @@
             <el-table-column prop="state" label="状态" width="100">
                 <template slot-scope="scope" >
                     <el-tag type="info" v-if="scope.row.state == '未审批'">未审批</el-tag>
-                    <el-tag type="success" v-if="scope.row.state == '通过'">通过</el-tag>
+                    <el-tag type="success" v-if="scope.row.state == '已通过'">已通过</el-tag>
                     <el-tag type="warning" v-if="scope.row.state == '不通过'">不通过</el-tag>
                 </template>
             </el-table-column>
@@ -88,8 +88,11 @@
                             <el-form-item label="访客姓名">
                                 <el-input v-model="customer.vName"></el-input>
                             </el-form-item>
-                            <el-form-item label="访客性别">
-                                <el-input v-model="customer.vSex"></el-input>
+                            <el-form-item label="访客性别" >
+                                <el-select v-model="customer.vSex" style="width: 200px">
+                                    <el-option label="男" value="男"></el-option>
+                                    <el-option label="女" value="女"></el-option>
+                                </el-select>
                             </el-form-item>
                             <el-form-item label="所在单位">
                                 <el-input v-model="customer.company"></el-input>
@@ -108,7 +111,7 @@
                         </div>
                         <div style="display: flex;justify-content: space-between">
                             <el-form-item label="属性">
-                                <el-select v-model="customer.property" placeholder="请选择">
+                                <el-select v-model="customer.property" placeholder="请选择" style="width: 200px">
                                     <el-option label="协力" value="协力"></el-option>
                                     <el-option label="入司" value="入司"></el-option>
                                     <el-option label="入厂" value="入厂"></el-option>
@@ -116,22 +119,32 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="类型">
-                                <el-select v-model="customer.times" placeholder="请选择">
+                                <el-select v-model="customer.times" placeholder="请选择" style="width: 200px">
                                     <el-option label="临时" value="临时"></el-option>
                                     <el-option label="短期" value="长期"></el-option>
                                     <el-option label="常驻（协力）" value="常驻（协力）"></el-option>
                                 </el-select>
                             </el-form-item>
+                            <el-form-item label="预约时间" >
+                                <el-date-picker
+                                        style="width: 200px"
+                                        value-format="yyyy-MM-dd HH:mm"
+                                        v-model="customer.vTime"
+                                        type="datetime"
+                                        placeholder="选择日期时间"
+                                        align="right"
+                                        :picker-options="form.pickerOptions">
+                                </el-date-picker>
+                            </el-form-item>
+                        </div>
+                        <div style="display: flex">
                             <el-form-item label="状态">
-                                <el-select v-model="customer.state" placeholder="请选择">
+                                <el-select v-model="customer.state" placeholder="请选择" style="width: 200px">
                                     <el-option label="未审批" value="未审批"></el-option>
                                     <el-option label="通过" value="通过"></el-option>
                                     <el-option label="不通过" value="不通过"></el-option>
                                 </el-select>
                             </el-form-item>
-                        </div>
-                        <div style="display: flex">
-
                         </div>
                         <div style="display: flex;justify-content: space-between">
 
@@ -170,28 +183,16 @@
                         <el-input v-model="form.pepleN" placeholder="请输入人数"></el-input>
                     </el-form-item>
                 </div>
-                <div style="display:flex; justify-content: space-between;">
-                    <el-form-item label="访客性别">
-                        <el-select v-model="form.vSex" placeholder="请选择">
-                            <el-option label="男" value="男"></el-option>
-                            <el-option label="女" value="女"></el-option>
-                        </el-select>
+                <div style="display:flex;justify-content: space-between;">
+                    <el-form-item label="受访部门">
+                        <el-input v-model="form.depart" placeholder="请输入受访部门"></el-input>
                     </el-form-item>
-                    <el-form-item label="属性">
-                        <el-select v-model="form.property" @change="proChenge" placeholder="请选择">
-                            <el-option :label="item.label" :value="item.value" v-for="item in form.propertys"></el-option>
-                        </el-select>
+                    <el-form-item label="受访对象">
+                        <el-input v-model="form.vPeple" placeholder="请输入受访对象"></el-input>
                     </el-form-item>
-
-                    <el-form-item label="类别">
-                        <el-select v-model="form.times" placeholder="请选择">
-                            <el-option :label="item.label" :value="item.value" v-for="item in form.timess"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </div>
-                <div style="display:flex;">
                     <el-form-item label="预约时间">
                         <el-date-picker
+                                style="width: 200px"
                                 value-format="yyyy-MM-dd HH:mm"
                                 v-model="form.vTime"
                                 type="datetime"
@@ -200,6 +201,28 @@
                                 :picker-options="form.pickerOptions">
                         </el-date-picker>
                     </el-form-item>
+                </div>
+                <div style="display:flex;justify-content: space-between;">
+                    <el-form-item label="属性">
+                        <el-select v-model="form.property" @change="proChenge" placeholder="请选择" style="width: 200px">
+                            <el-option :label="item.label" :value="item.value" v-for="item in form.propertys"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="类别">
+                        <el-select v-model="form.times" placeholder="请选择" style="width: 200px">
+                            <el-option :label="item.label" :value="item.value" v-for="item in form.timess"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="访客性别">
+                        <el-select v-model="form.vSex" placeholder="请选择" style="width: 200px">
+                            <el-option label="男" value="男"></el-option>
+                            <el-option label="女" value="女"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
+                <div style="display:flex;">
+
+
                 </div>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -250,8 +273,10 @@
                     state: '未审核',
                     vName: '',
                     vSex: '',
+                    depart: '',
                     company: '',
                     mobile: '',
+                    vPeple: '',
                     idCard: '',
                     pepleN: '',
                     vTime: '',
@@ -350,8 +375,9 @@
                 this.currentPage = val;
             },
             searchName(val) {
+                this.rows = this.riws
                 let oResult = this.rows.filter(item => {
-                    if(item.vName === val){
+                    if(item.vName.indexOf(val) !== -1){
                         return item
                     }
                 });

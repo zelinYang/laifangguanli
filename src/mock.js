@@ -20,7 +20,7 @@ let random = Mock.Random;
             // 受访部门
             depart: '技术部/销售部',
             // 受访人
-            vPeple: 'XXX',
+            vPeple: random.cname(),
             // 填表时间
             creatTime: getTime(),
             // 将预约的时间
@@ -55,7 +55,7 @@ let random = Mock.Random;
         return cardN
     }
     function setState() {
-        let sArr = ['未审批','通过','不通过'];
+        let sArr = ['未审批','已通过','不通过'];
         let num = Math.round(Math.random() * (sArr.length - 1));
         return sArr[num];
     }
@@ -768,7 +768,7 @@ let random = Mock.Random;
         return Math.round(Math.random() *10)
     }
     function setToB(val) {
-        if (val === '严重'|| val ==='较严重') {
+        if (val === '严重') {
             return '是'
         }else{
             return '否'
@@ -788,7 +788,7 @@ let random = Mock.Random;
     }
 
     function setGrade() {
-        let gArr = ['一般','轻微','较严重','严重'];
+        let gArr = ['一般','轻微','严重'];
         let num = Math.round(Math.random() * (gArr.length - 1))
         return gArr[num]
     }

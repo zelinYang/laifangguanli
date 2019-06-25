@@ -12,7 +12,7 @@
       <!-- 搜索框 -->
       <el-col :span="4">
         <el-input placeholder="请输入要查找的车牌号" class="input-with-select" prefix-icon="el-icon-search"
-                  @change="searchName" v-model="sousuo" style="max-width: 280px; float: right;"
+                  @change="searchName(sousuo)" v-model="sousuo" style="max-width: 280px; float: right;"
                   :clearable="true"></el-input>
       </el-col>
     </el-row>
@@ -125,9 +125,9 @@
       handleCurrentChange(val) {
         this.currentPage = val;
       },
-      searchName() {
+      searchName(val) {
         let oResult = this.rows.filter(item => {
-          if(item.cName === val){
+          if(item.cName.indexOf(val) !== -1){
             return item
           }
         });

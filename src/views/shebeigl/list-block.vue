@@ -98,25 +98,12 @@
                         <div style="display: flex;">
                             <el-form-item label="技术参数">
                                 <el-input
+                                        style="width: 200px"
                                         type="textarea"
-                                        :rows="2"
+                                        :rows="4"
                                         placeholder="请输入内容"
                                         v-model="customer.agu">
                                 </el-input>
-                        </el-form-item>
-<!--                            <el-form-item label="类别">-->
-<!--                                <el-input v-model="customer.times"></el-input>-->
-<!--                            </el-form-item>-->
-<!--                            <el-form-item label="填表日期">-->
-<!--                                <el-input v-model="customer.creatTime"></el-input>-->
-<!--                            </el-form-item>-->
-                        </div>
-                        <div style="display: flex;justify-content: space-between">
-                            <el-form-item label="状态">
-                                <el-select v-model="customer.grade" placeholder="请选择">
-                                    <el-option label="异常" value="异常"></el-option>
-                                    <el-option label="正常" value="正常"></el-option>
-                                </el-select>
                             </el-form-item>
                         </div>
                         <div style="display: flex;">
@@ -125,6 +112,14 @@
                             </el-form-item>
                             <el-form-item label="单位">
                                 <el-input v-model="customer.depart"></el-input>
+                            </el-form-item>
+                        </div>
+                        <div style="display: flex;justify-content: space-between">
+                            <el-form-item label="状态">
+                                <el-select v-model="customer.grade" placeholder="请选择">
+                                    <el-option label="异常" value="异常"></el-option>
+                                    <el-option label="正常" value="正常"></el-option>
+                                </el-select>
                             </el-form-item>
                         </div>
                     </el-form>
@@ -146,26 +141,11 @@
 <!--                    <el-form-item label="来访目的">-->
 <!--                        <el-input v-model="form.target" placeholder="请输入来访目的"></el-input>-->
 <!--                    </el-form-item>-->
-                </div>
-                <div style="display: flex;">
                     <el-form-item label="规格型号">
                         <el-input v-model="form.type" placeholder="请输入型号"></el-input>
                     </el-form-item>
                 </div>
-                <div style="display:flex;">
-                    <el-form-item label="技术参数">
-                        <el-input
-                                type="textarea"
-                                :rows="2"
-                                placeholder="请输入内容"
-                                v-model="form.event">
-                        </el-input>
-                    </el-form-item>
-                </div>
-                <div style="display:flex; justify-content: space-between;">
-                    <el-form-item label="报修电话">
-                        <el-input v-model="form.mobile" placeholder="请输入电话"></el-input>
-                    </el-form-item>
+                <div style="display:flex;justify-content: space-between;">
                     <el-form-item label="数量">
                         <el-input type="number" min="0" v-model="form.meber" placeholder="请输入数量"></el-input>
                     </el-form-item>
@@ -173,7 +153,25 @@
                         <el-input v-model="form.depart" placeholder="请输入单位"></el-input>
                     </el-form-item>
                 </div>
+                <div style="display:flex; justify-content: space-between;">
+                    <el-form-item label="报修电话">
+                        <el-input v-model="form.mobile" placeholder="请输入电话"></el-input>
+                    </el-form-item>
+                </div>
+                <div style="display:flex;">
+                    <el-form-item label="技术参数">
+                        <el-input
+                                style="width: 200px"
+                                type="textarea"
+                                :rows="4"
+                                placeholder="请输入内容"
+                                v-model="form.event">
+                        </el-input>
+                    </el-form-item>
+                </div>
+                <div style="display:flex; ">
 
+                </div>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialog_add_showing = false">取 消</el-button>
@@ -325,8 +323,10 @@
                 this.currentPage = val;
             },
             searchName(val) {
+                // console.log(val)
+                // debugger;
                 let oResult = this.rows.filter(item => {
-                    if(item.vName === val){
+                    if(item.vName.indexOf(val) !== -1){
                         return item
                     }
                 });

@@ -44,14 +44,14 @@
             <el-table-column prop="property" label="属性" width="100"></el-table-column>
 <!--            <el-table-column prop="depart" label="单位" width="100"></el-table-column>-->
             <el-table-column prop="mobile" label="手机" width="180"></el-table-column>
+            <el-table-column prop="vTime" label="时间" width="180"></el-table-column>
             <el-table-column prop="rongNu" label="违章次数" width="100"></el-table-column>
             <!--            <el-table-column prop="depart" label="受访部门" width="180"></el-table-column>-->
             <!--            <el-table-column prop="vPeple" label="受访对象" width="100"></el-table-column>-->
             <el-table-column prop="grade" label="违章等级" width="100">
                 <template slot-scope="scope">
-                    <el-tag type="" v-if="scope.row.grade == '一般'">一般</el-tag>
-                    <el-tag type="success" v-if="scope.row.grade == '轻微'">轻微</el-tag>
-                    <el-tag type="warning" v-if="scope.row.grade == '较严重'">较严重</el-tag>
+                    <el-tag type="success" v-if="scope.row.grade == '一般'">一般</el-tag>
+                    <el-tag type="warning" v-if="scope.row.grade == '轻微'">轻微</el-tag>
                     <el-tag type="danger" v-if="scope.row.grade == '严重'">严重</el-tag>
                 </template>
             </el-table-column>
@@ -113,9 +113,22 @@
                                 <el-input v-model="customer.rongNu"></el-input>
                             </el-form-item>
                         </div>
+                        <div>
+                            <el-form-item label="时间">
+                                <el-date-picker
+                                        style="width: 200px"
+                                        v-model="customer.vTime"
+                                        type="datetime"
+                                        placeholder="选择日期时间">
+                                </el-date-picker>
+                            </el-form-item>
+                        </div>
                         <div style="display: flex;">
                             <el-form-item label="违章事件">
-                                <el-input v-model="customer.event" style="width: 400px;"></el-input>
+                                <el-input
+                                        style="width: 200px;"
+                                        v-model="customer.event">
+                                </el-input>
                             </el-form-item>
                             <!--                            <el-form-item label="类别">-->
                             <!--                                <el-input v-model="customer.times"></el-input>-->
@@ -126,7 +139,7 @@
                         </div>
                         <div style="display: flex;justify-content: space-between">
                             <el-form-item label="违章等级">
-                                <el-select v-model="customer.grade" placeholder="请选择">
+                                <el-select v-model="customer.grade" placeholder="请选择" style="width: 200px">
                                     <el-option label="一般" value="一般"></el-option>
                                     <el-option label="较严重" value="较严重"></el-option>
                                     <el-option label="较严重" value="较严重"></el-option>
@@ -165,32 +178,44 @@
                     <!--                        <el-input v-model="form.pepleN" placeholder="请输入人数"></el-input>-->
                     <!--                    </el-form-item>-->
                 </div>
-                <div style="display:flex;">
-                    <el-form-item label="违章事件">
-                        <el-input
-                                type="textarea"
-                                :rows="2"
-                                placeholder="请输入内容"
-                                v-model="form.event">
-                        </el-input>
-                    </el-form-item>
-                </div>
+
                 <div style="display:flex; justify-content: space-between;">
                     <el-form-item label="性别">
-                        <el-select v-model="form.vSex" placeholder="请选择">
+                        <el-select v-model="form.vSex" placeholder="请选择" style="width: 200px;">
                             <el-option label="男" value="男"></el-option>
                             <el-option label="女" value="女"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="属性">
-                        <el-select v-model="form.property" @change="proChenge" placeholder="请选择">
+                        <el-select v-model="form.property" @change="proChenge" placeholder="请选择" style="width: 200px;">
                             <el-option :label="item.label" :value="item.value" v-for="item in form.propertys"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>
                 <div>
+                    <el-form-item label="时间">
+                        <el-date-picker
+                                style="width: 200px;"
+                                v-model="form.vTime"
+                                type="datetime"
+                                placeholder="选择日期时间">
+                        </el-date-picker>
+                    </el-form-item>
+                </div>
+                <div style="display:flex;">
+                    <el-form-item label="违章事件">
+                        <el-input
+                                style="width: 200px;"
+                                type="textarea"
+                                :rows="4"
+                                placeholder="请输入内容"
+                                v-model="form.event">
+                        </el-input>
+                    </el-form-item>
+                </div>
+                <div>
                     <el-form-item label="违章等级">
-                        <el-select v-model="form.grade" placeholder="请选择">
+                        <el-select v-model="form.grade" placeholder="请选择" style="width: 200px;">
                             <el-option :label="item.label" :value="item.value" v-for="item in form.timess"></el-option>
                         </el-select>
                     </el-form-item>
