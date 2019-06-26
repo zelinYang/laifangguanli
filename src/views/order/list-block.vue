@@ -87,7 +87,7 @@
           dialog_detail_showing: false,
           dialog_new_showing: false,
           rows:[],
-          row:[],
+          riws:[],
           item:{},
           currentPage: 1,
           pagesize: 10,
@@ -113,7 +113,7 @@
           // this.list_input.customer_id = this.customer_id;
           this.axios.post('/peple/employee/getTable').then((res) => {
               this.rows = res.data;
-              this.row = this.rows;
+              this.riws = res.data;
               this.loading = false;
           });
         },
@@ -124,9 +124,9 @@
             type: 'warning'
           }).then(() => {
             let number = val.num;
-            let start = this.row.length - number;
-            this.row.splice(start,1);
-            this.rows = this.row
+            let start = this.riws.length - number;
+            this.riws.splice(start,1);
+            this.rows = this.riws
             this.$message({
               type: 'success',
               message: '删除成功!'
@@ -149,8 +149,9 @@
         },
 
         searchName(val){
+          this.rows = this.riws
           let oResult = this.rows.filter(item => {
-            if(item.emName === val){
+            if(item.emName.indexOf(val) !== -1){
               return item
             }
           });

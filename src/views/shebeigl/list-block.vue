@@ -165,7 +165,7 @@
                                 type="textarea"
                                 :rows="4"
                                 placeholder="请输入内容"
-                                v-model="form.event">
+                                v-model="form.agu">
                         </el-input>
                     </el-form-item>
                 </div>
@@ -304,7 +304,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.rows.splice(val.num - 1,1);
+                    this.rows.splice(this.rows.length - val.num,1);
                     this.$message({
                         type: 'success',
                         message: '删除成功!'

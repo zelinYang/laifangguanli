@@ -376,8 +376,15 @@
             },
             searchName(val) {
                 this.rows = this.riws
+                // 过滤搜索关键字
+                // 返回数组
                 let oResult = this.rows.filter(item => {
-                    if(item.vName.indexOf(val) !== -1){
+                    if(item.vName.indexOf(val) !== -1
+                    || item.idCard.indexOf(val) !== -1
+                    || item.property.indexOf(val) !== -1
+                    || item.times.indexOf(val) !== -1
+                    || item.state.indexOf(val) !== -1
+                    || item.vTime.indexOf(val) !== -1){
                         return item
                     }
                 });

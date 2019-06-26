@@ -350,7 +350,8 @@
             },
             searchName(val) {
                 let oResult = this.rows.filter(item => {
-                    if(item.vName === val){
+                    if(item.vName.indexOf(val) !== -1
+                    || item.property.indexOf(val) !== -1){
                         return item
                     }
                 });

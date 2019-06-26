@@ -106,13 +106,13 @@ let random = Mock.Random;
         const date = new Date();
         // console.log(date.getMinutes());
         let YY = date.getFullYear();
-        let MM = date.getMonth() > 10 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
-        let DD = date.getDate() > 10 ? date.getDate() + 1 : `0${date.getDate() + 1}`;
+        // let MM = date.getMonth() > 10 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+        // let DD = date.getDate() > 10 ? date.getDate() + setD() : `0${date.getDate() + setD()}`;
         // let HH = date.getHours() > 10? date.getHours() : `0${getHours()}`;
         // let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
         // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
 
-        return `${YY}-${MM}-${DD} ${setHour()}:${setMinute()}`;
+        return `${YY}-${setDate().MM}-${setDate().DD} ${setHour()}:${setMinute()}`;
 
         function setMinute() {
             if (flag) {
@@ -128,6 +128,20 @@ let random = Mock.Random;
             let hArr = ['10', '12', '14', '15'];
             let num = Math.round(Math.random() * 3);
             return hArr[num];
+        }
+        function setDate() {
+            // debugger;
+            let obj = {}
+            let oNum = Math.round(Math.random() * 9);
+            let DD = date.getDate() + oNum
+            let MM = date.getMonth() > 10 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+            if(DD > 30){
+                MM = date.getMonth() > 10 ? date.getMonth() + 2 : `0${date.getMonth() + 2}`;
+                DD = `0${oNum}`;
+            }
+            obj.MM = MM;
+            obj.DD = DD;
+            return obj;
         }
     }
 
@@ -277,7 +291,7 @@ let random = Mock.Random;
 
 
         function setSecond() {
-            let tArr = []
+            let tArr = [];
             for (let i = 0; i < 60; i++) {
                 tArr.push(i > 9 ? i : `0${i}`)
             }
@@ -286,7 +300,7 @@ let random = Mock.Random;
         }
 
         function setMinute() {
-            let tArr = []
+            let tArr = [];
             for (let i = 0; i < 60; i++) {
                 tArr.push(i > 9 ? i : `0${i}`)
             }
@@ -1153,7 +1167,7 @@ let random = Mock.Random;
     Mock.mock('/weizcl/getTable', 'post', arr.reverse());
 
     Mock.mock('/shebgl/tables', 'post', [{
-        num: 1,
+        num: 4,
         vName: '访客管理系统',
         type: 'C3&SQLFKV4.0',
         agu: '可实现访客的综合管理',
@@ -1163,7 +1177,7 @@ let random = Mock.Random;
         grade: '正常',
     },
         {
-            num: 2,
+            num: 3,
             vName: '发卡器',
             type: 'DAC FK4160',
             agu: 'USB 接口',
@@ -1173,7 +1187,7 @@ let random = Mock.Random;
             grade: '正常',
         },
         {
-            num: 3,
+            num: 2,
             vName: '票据打印机',
             type: '5890T',
             agu: '打印访客凭条',
@@ -1183,7 +1197,7 @@ let random = Mock.Random;
             grade: '异常',
         },
         {
-            num: 4,
+            num: 1,
             vName: '二代身份证阅读器',
             type: 'DAC CR880',
             agu: 'USB 接 口 、 有 效 采 集 面 积16mm*14mm',
