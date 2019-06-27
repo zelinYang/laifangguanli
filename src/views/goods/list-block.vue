@@ -44,7 +44,7 @@
           <el-tag type=" " v-if="scope.row.state == '自备车'">自备车</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200">
+      <el-table-column label="操作" width="120">
         <template slot-scope="scope">
           <el-button size="mini" @click="deleteR(scope.row)">删除记录
           </el-button>

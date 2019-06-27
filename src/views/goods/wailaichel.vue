@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="width: 99%;">
         <!-- 按钮与筛选 -->
         <el-row :gutter="0" type="flex" justify="space-between" style="margin: 10px 0;">
             <!-- 按钮 -->
@@ -12,7 +12,7 @@
             <!-- 搜索框 -->
             <el-col :span="4">
                 <el-input placeholder="请输入要查找的车牌号" class="input-with-select" prefix-icon="el-icon-search"
-                          @change="searchName" v-model="sousuo" style="max-width: 280px; float: right;"
+                          @change="searchName(sousuo)" v-model="sousuo" style="max-width: 280px; float: right;"
                           :clearable="true"></el-input>
             </el-col>
         </el-row>
@@ -44,7 +44,7 @@
                     <el-tag type=" " v-if="scope.row.state == '客户'">客户</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="100">
+            <el-table-column label="操作" width="120">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="deleteR(scope.row)"
                                style="margin-right: 10px;">删除记录
@@ -127,9 +127,9 @@
             handleCurrentChange(val) {
                 this.currentPage = val;
             },
-            searchName() {
+            searchName(val) {
                 let oResult = this.rows.filter(item => {
-                    if(item.cName === val){
+                    if(item.cName.indexOf(val) !== -1){
                         return item
                     }
                 });

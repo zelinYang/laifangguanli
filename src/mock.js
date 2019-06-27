@@ -111,8 +111,9 @@ let random = Mock.Random;
         // let HH = date.getHours() > 10? date.getHours() : `0${getHours()}`;
         // let mm = date.getMinutes() > 10? date.getMinutes() : `0${getMinutes()}`;
         // let SS = date.getSeconds() > 10? date.getSeconds() : `0${getSeconds()}`;
+        let MD = setDate()
 
-        return `${YY}-${setDate().MM}-${setDate().DD} ${setHour()}:${setMinute()}`;
+        return `${YY}-${MD.MM}-${MD.DD} ${setHour()}:${setMinute()}`;
 
         function setMinute() {
             if (flag) {
